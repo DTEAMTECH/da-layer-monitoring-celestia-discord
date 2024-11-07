@@ -1,0 +1,27 @@
+{
+  "tasks": {
+    "dev": "deno run --allow-import=unpkg.com:443,deno.land:443,esm.sh,cdn.skypack.dev --allow-net=discord.com:443,:8000 --watch src/main.ts",
+    "dev:allow": "deno run -A --watch src/main.ts",
+    "tunnel": "ssh -p 443 -R0:localhost:8000 a.pinggy.io"
+  },
+  "imports": {
+    "@std/assert": "jsr:@std/assert@1",
+    "@std/encoding": "jsr:@std/encoding@^1.0.5",
+    "app/": "./src/",
+    "discord.js": "npm:discord.js@^14.16.3",
+    "prometheus-query": "npm:prometheus-query@^3.4.0",
+    "sift/": "https://deno.land/x/sift@0.6.0/"
+  },
+  "unstable": [
+    "cron",
+    "kv"
+  ],
+  "deploy": {
+    "project": "58e6a6b4-300e-4d0b-8923-1577f131434d",
+    "exclude": [
+      "**/node_modules"
+    ],
+    "include": [],
+    "entrypoint": "src/main.ts"
+  }
+}
