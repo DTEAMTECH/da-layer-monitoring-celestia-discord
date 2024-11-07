@@ -8,5 +8,5 @@ Create .env file and fill it
 
 Run program 
 ```bash 
-deno deno task dev:allow
+deno task dev:allow
 ```
