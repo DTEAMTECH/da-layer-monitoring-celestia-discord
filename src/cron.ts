@@ -1,7 +1,7 @@
 import { kv } from "app/services/storage.ts";
 import { bridgeNodesAPI } from "app/services/api.ts";
 import { disApi } from "app/utils.ts";
-Deno.cron("Check bridge nodes", "*/5 * * * *", async () => {
+// Deno.cron("Check bridge nodes", "*/5 * * * *", async () => {
   const CONNECTED_PEERS_THRESHOLD = 5;
   const LAST_SYNC_THRESHOLD = 5;
   const nodesIds = await bridgeNodesAPI.getAllBridgeNodesIds();
@@ -43,4 +43,4 @@ Deno.cron("Check bridge nodes", "*/5 * * * *", async () => {
       );
     }
   }
-});
+// });

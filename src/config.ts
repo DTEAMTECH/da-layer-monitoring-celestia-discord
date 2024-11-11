@@ -7,4 +7,6 @@ export default {
   DISCORD_PUBLIC_KEY: Deno.env.get("DISCORD_PUBLIC_KEY") as string,
   PROMETHUES_URL: Deno.env.get("PROMETHUES_URL") as string,
   BOT_CHANNEL_ID: Deno.env.get("BOT_CHANNEL_ID") as string,
+  // don't need for Deno deploy
+  KV_PATH: Deno.env.get("KV_PATH") as string,
 };
