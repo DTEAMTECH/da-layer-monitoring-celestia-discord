@@ -112,7 +112,7 @@ export const subscribe: Command = {
 
     const embed = new EmbedBuilder()
         .setTitle("Subscription success")
-        .setDescription(`You have been subscribed to **${param.value}**`)
+        .setDescription(`You have been subscribed to **\`${param.value}\`**`)
         .setColor(0x7b2bf9)
         .setThumbnail("https://raw.githubusercontent.com/DTEAMTECH/contributions/refs/heads/main/celestia/utils/bridge_metrics_checker.png")
         .setFooter({ text: "Made by www.dteam.tech \uD83D\uDFE0" })
