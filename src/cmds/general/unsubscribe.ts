@@ -106,7 +106,7 @@ export const unsubscribe: Command = {
     await kv.delete(["subscription", userId, param.value]);
     const embed = new EmbedBuilder()
         .setTitle("Unsubscribed successfully")
-        .setDescription(`You have successfully unsubscribed from **${param.value}**`)
+        .setDescription(`You have successfully unsubscribed from **\`${param.value}\`**`)
         .setColor(0x7b2bf9)
         .setThumbnail("https://raw.githubusercontent.com/DTEAMTECH/contributions/refs/heads/main/celestia/utils/bridge_metrics_checker.png")
         .setFooter({ text: "Made by www.dteam.tech \uD83D\uDFE0" })
