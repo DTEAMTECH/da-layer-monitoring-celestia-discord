@@ -1,18 +1,20 @@
-import { SlashCommandBuilder, SlashCommandStringOption } from "discord.js";
+import { SlashCommandBuilder, SlashCommandStringOption, EmbedBuilder } from "discord.js";
 import { kv } from "app/services/storage.ts";
 import { bridgeNodesAPI } from "app/services/api.ts";
 
 import type { Command } from "app/cmds/mod.ts";
 import { json } from "sift/mod.ts";
+
 const command = new SlashCommandBuilder()
-  .setName("unsubscribe")
-  .setDescription("Subscribe for the updates about your bridge node")
-  .addStringOption((option: SlashCommandStringOption) =>
-    option.setName("id")
-      .setDescription("Bridge node ID")
-      .setRequired(true)
-      .setAutocomplete(true)
-  );
+    .setName("unsubscribe")
+    .setDescription("Subscribe for the updates about your bridge node")
+    .addStringOption((option: SlashCommandStringOption) =>
+        option.setName("id")
+            .setDescription("Bridge node id")
+            .setRequired(true)
+            .setAutocomplete(true)
+    );
+
 const autocomplete = async () => {
   const nodesIds = await bridgeNodesAPI.getAllBridgeNodesIds();
   const choices = nodesIds.map((nodeId) => ({
@@ -32,10 +34,16 @@ export const subscribe: Command = {
   autocomplete,
   execute: async (data, interaction) => {
     if (!interaction.member) {
+      const embed = new EmbedBuilder()
+          .setTitle("Error")
+          .setDescription("You must be in a server to use this command!")
+          .setColor(0xaf3838)
+          .setThumbnail("https://raw.githubusercontent.com/DTEAMTECH/contributions/refs/heads/main/celestia/utils/bridge_metrics_checker.png")
+          .setFooter({ text: "Made by www.dteam.tech \uD83D\uDFE0" })
       return json({
         type: 4,
         data: {
-          content: `You must be in a server to use this command!`,
+          embeds: [embed],
         },
       });
     }
@@ -45,44 +53,75 @@ export const subscribe: Command = {
     const subscribedAt = new Date().toISOString();
     const param = data.options?.find((opt) => opt.name === "id");
     if (!param) {
+      const embed = new EmbedBuilder()
+          .setTitle("Missing parameters")
+          .setDescription("You must provide parameters")
+          .setColor(0xaf3838)
+          .setThumbnail("https://raw.githubusercontent.com/DTEAMTECH/contributions/refs/heads/main/celestia/utils/bridge_metrics_checker.png")
+          .setFooter({ text: "Made by www.dteam.tech \uD83D\uDFE0" })
+          .setTimestamp(new Date())
       return json({
         type: 4,
         data: {
-          content: `You must provide parameters!`,
+          embeds: [embed],
         },
       });
     }
     if (param.type !== 3) {
+      const embed = new EmbedBuilder()
+          .setTitle("Invalid parameters")
+          .setDescription("Invalid type of parameters")
+          .setColor(0xaf3838)
+          .setThumbnail("https://raw.githubusercontent.com/DTEAMTECH/contributions/refs/heads/main/celestia/utils/bridge_metrics_checker.png")
+          .setFooter({ text: "Made by www.dteam.tech \uD83D\uDFE0" })
+          .setTimestamp(new Date())
       return json({
         type: 4,
         data: {
-          content: `Invalid type of parameters!`,
+          embeds: [embed],
         },
       });
     }
 
     kv.set(["user", userId], { username, id: userId, globalName });
-    // todo: check if node bridge exists
+
+    // Check if bridge node ID exists
     const nodesIds = await bridgeNodesAPI.getAllBridgeNodesIds();
     if (!nodesIds.includes(param.value)) {
+      const embed = new EmbedBuilder()
+          .setTitle("Invalid node bridge id")
+          .setDescription("Please check that your bridge id is correct and try again")
+          .setColor(0xaf3838)
+          .setThumbnail("https://raw.githubusercontent.com/DTEAMTECH/contributions/refs/heads/main/celestia/utils/bridge_metrics_checker.png")
+          .setFooter({ text: "Made by www.dteam.tech \uD83D\uDFE0" })
+          .setTimestamp(new Date())
+
       return json({
         type: 4,
         data: {
-          content: `Invalid node bridge id!`,
+          embeds: [embed],
         },
       });
     }
+
     kv.set(["subscription", userId, param.value], {
       userId,
       nodeBridgeId: param.value,
       subscribedAt,
     });
 
+    const embed = new EmbedBuilder()
+        .setTitle("Subscription success")
+        .setDescription(`You have been subscribed to **${param.value}**`)
+        .setColor(0x7b2bf9)
+        .setThumbnail("https://raw.githubusercontent.com/DTEAMTECH/contributions/refs/heads/main/celestia/utils/bridge_metrics_checker.png")
+        .setFooter({ text: "Made by www.dteam.tech \uD83D\uDFE0" })
+        .setTimestamp(new Date())
+
     return json({
       type: 4,
       data: {
-        content:
-          `You hava been subscribed to ${param.value}! Dear <@${userId}>`,
+        embeds: [embed],
       },
     });
   },
