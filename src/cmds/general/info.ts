@@ -63,7 +63,7 @@ export const info: Command = {
       embed.addFields([
         {
           name: `Bridge Node id`,
-          value: nodeInfo.exported_instance || "Unknown",
+          value: `**\`${nodeInfo.exported_instance}\`**` || "Unknown",
           inline: false,
         },
         {
