@@ -35,7 +35,7 @@ Deno.cron("Check bridge nodes", "*/5 * * * *", async () => {
     if (sumSync >= LAST_SYNC_THRESHOLD) {
       const embed = new EmbedBuilder()
           .setTitle("Warning! Node sync alert")
-          .setDescription(`<@${String(userId)}>, your node **${String(nodeId)}** is out of sync and not syncing right now`)
+          .setDescription(`<@${String(userId)}>, node **\`${String(nodeId)}\`** is out of sync`)
           .setColor(0xf3cd37)
           .setThumbnail("https://raw.githubusercontent.com/DTEAMTECH/contributions/refs/heads/main/celestia/utils/bridge_metrics_checker.png")
           .setFooter({ text: "Made by www.dteam.tech \uD83D\uDFE0" })
@@ -47,7 +47,7 @@ Deno.cron("Check bridge nodes", "*/5 * * * *", async () => {
     if (connectedPeers.value.value < CONNECTED_PEERS_THRESHOLD && sumSync < LAST_SYNC_THRESHOLD) {
       const embed = new EmbedBuilder()
           .setTitle("Warning! Low peer count alert")
-          .setDescription(`<@${String(userId)}>, your node **${String(nodeId)}** has less than ${CONNECTED_PEERS_THRESHOLD} connected peers`)
+          .setDescription(`<@${String(userId)}>, node **\`${String(nodeId)}\`** has less than ${CONNECTED_PEERS_THRESHOLD} connected peers`)
           .setColor(0xf3cd37)
           .setThumbnail("https://raw.githubusercontent.com/DTEAMTECH/contributions/refs/heads/main/celestia/utils/bridge_metrics_checker.png")
           .setFooter({ text: "Made by www.dteam.tech \uD83D\uDFE0" })
