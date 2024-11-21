@@ -14,7 +14,7 @@ const createAlertMessage = (title: string, text: string) =>
     )
     .setFooter({ text: "Made by www.dteam.tech \uD83D\uDFE0" })
     .setTimestamp(new Date());
-
+// TODO: Create global error handler and send error message to private channel
 Deno.cron("Check bridge nodes", "*/5 * * * *", async () => {
   const nodesIds = await bridgeNodesAPI.getAllBridgeNodesIds();
   const nodesChecks = new Map<string, {
@@ -71,6 +71,7 @@ Deno.cron("Check bridge nodes", "*/5 * * * *", async () => {
           newAlerted[alert.alert.name] = alertedTimeIso;
           continue;
         }
+        // todo: send on error repeat N times 
         await disApi.sendEmbedMessageBotChannel(embededAlertMessage);
         newAlerted[alert.alert.name] = new Date().toISOString();
       } else if (alert.alert.name in alerted) {
