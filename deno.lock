@@ -9,7 +9,7 @@
     "npm:@types/node@*": "22.5.4",
     "npm:discord.js@^14.16.3": "14.16.3",
     "npm:localtunnel@*": "2.0.2",
-    "npm:prometheus-query@^3.4.0": "3.4.0"
+    "npm:prometheus-query@^3.4.1": "3.4.1"
   },
   "jsr": {
     "@std/assert@1.0.6": {
@@ -255,8 +255,8 @@
     "openurl@1.1.1": {
       "integrity": "sha512-d/gTkTb1i1GKz5k3XE3XFV/PxQ1k45zDqGP2OA7YhgsaLoqm6qRvARAZOFer1fcXritWlGBRCu/UgeS4HAnXAA=="
     },
-    "prometheus-query@3.4.0": {
-      "integrity": "sha512-PGNwYVjXxenfj2PR4FKEUv5O4XO8ciHT92GX83J5ZJm5ki3YzLLiv+TfbmQSUxvHcXofLg9PYH6CBCSplcvr9g==",
+    "prometheus-query@3.4.1": {
+      "integrity": "sha512-OwktfrdZ4m35j7SJXmWq/Dwl9K63g+rNjCy9oUJo5CVsaiTh+hOOryWaSSzthPkgUmFn580/tdM9DUd9KsxjFg==",
       "dependencies": [
         "axios@1.7.7"
       ]
@@ -1149,7 +1149,7 @@
       "jsr:@std/assert@1",
       "jsr:@std/encoding@^1.0.5",
       "npm:discord.js@^14.16.3",
-      "npm:prometheus-query@^3.4.0"
+      "npm:prometheus-query@^3.4.1"
     ]
   }
 }

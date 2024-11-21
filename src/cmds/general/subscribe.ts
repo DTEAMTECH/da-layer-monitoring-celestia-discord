@@ -4,6 +4,11 @@ import { bridgeNodesAPI } from "app/services/api.ts";
 
 import type { Command } from "app/cmds/mod.ts";
 import { json } from "sift/mod.ts";
+import {
+  APIApplicationCommandAutocompleteInteraction,
+  ApplicationCommandOptionType
+} from "discord.js";
+
 
 const command = new SlashCommandBuilder()
     .setName("unsubscribe")
@@ -15,16 +20,32 @@ const command = new SlashCommandBuilder()
             .setAutocomplete(true)
     );
 
-const autocomplete = async () => {
+const autocomplete = async (interaction: APIApplicationCommandAutocompleteInteraction) => {
+
+
   const nodesIds = await bridgeNodesAPI.getAllBridgeNodesIds();
   const choices = nodesIds.map((nodeId) => ({
     name: nodeId,
     value: nodeId,
   }));
+
+  const findData = interaction.data.options.find((opt) => opt.name === "id");
+  
+
+  if(findData && findData?.type === ApplicationCommandOptionType.String && findData.value.length) {
+    const filtredChoices = choices.filter((choice) => choice.name.includes(findData.value));
+    return json({
+      type: 8,
+      data: {
+        choices: filtredChoices.slice(0, 5),
+      },
+    });
+  }
+    
   return json({
     type: 8,
     data: {
-      choices,
+      choices: choices.slice(0, 5)
     },
   });
 };

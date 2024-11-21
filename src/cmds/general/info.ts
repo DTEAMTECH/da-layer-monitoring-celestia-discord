@@ -25,7 +25,7 @@ export const info: Command = {
     }
 
     const userId = interaction.member.user.id;
-    const username = interaction.member.user.username;
+    //const username = interaction.member.user.username;
     const bridges = kv.list({ prefix: ["subscription", userId] });
     const allBridgeNodes = [];
 
@@ -59,7 +59,15 @@ export const info: Command = {
         .setTimestamp(new Date())
 
     allNodes.forEach((node) => {
-      const nodeInfo = node?.metric?.labels || {};
+      const nodeInfo: {
+        exported_instance?: string;
+        semantic_version?: string;
+        golang_version?: string;
+        last_commit?: string;
+        build_time?: string;
+        system_version?: string;
+        instance?: string;
+      } = node?.metric?.labels || {};
       embed.addFields([
         {
           name: `Bridge Node id`,
