@@ -27,7 +27,7 @@ Deno.cron("Check bridge nodes", "*/5 * * * *", async () => {
     const checks = [];
     for (const alert of alerts) {
       const checkResult = await alert.check({ nodeId });
-      console.log('checkResult', checkResult)
+      console.log("checkResult", checkResult);
       checks.push({ check: checkResult, alert });
     }
     nodesChecks.set(nodeId, checks);
@@ -39,7 +39,7 @@ Deno.cron("Check bridge nodes", "*/5 * * * *", async () => {
 
   for await (const { key, value } of subs) {
     const [_, userId, nodeId] = key;
-    console.log('subs', value)
+    console.log("subs", value);
     if (!isObject(value)) continue;
 
     const nodeData = nodesChecks.get(String(nodeId));
@@ -68,11 +68,11 @@ Deno.cron("Check bridge nodes", "*/5 * * * *", async () => {
       if (isFired) {
         const alertedTimeIso = alerted[alert.alert.name];
         if (alertedTimeIso && isRecent(alertedTimeIso)) {
-          newAlerted[alert.alert.name] = alertedTimeIso; 
+          newAlerted[alert.alert.name] = alertedTimeIso;
           continue;
         }
         await disApi.sendEmbedMessageBotChannel(embededAlertMessage);
-        newAlerted[alert.alert.name] = new Date().toISOString(); 
+        newAlerted[alert.alert.name] = new Date().toISOString();
       } else if (alert.alert.name in alerted) {
         await disApi.sendEmbedMessageBotChannel(embededAlertMessage);
         delete alerted[alert.alert.name];
@@ -89,4 +89,3 @@ Deno.cron("Check bridge nodes", "*/5 * * * *", async () => {
     });
   }
 });
-

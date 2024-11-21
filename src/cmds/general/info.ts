@@ -1,23 +1,25 @@
-import { SlashCommandBuilder, EmbedBuilder } from "discord.js";
+import { EmbedBuilder, SlashCommandBuilder } from "discord.js";
 import { kv } from "app/services/storage.ts";
 import { bridgeNodesAPI } from "app/services/api.ts";
 import type { Command } from "app/cmds/mod.ts";
 import { json } from "sift/mod.ts";
 
 const command = new SlashCommandBuilder()
-    .setName("info")
-    .setDescription("Get information about bridge node");
+  .setName("info")
+  .setDescription("Get information about bridge node");
 
 export const info: Command = {
   command,
   execute: async (_data, interaction) => {
     if (!interaction.member) {
       const embed = new EmbedBuilder()
-          .setTitle("Error")
-          .setDescription("You must be in a server to use this command!")
-          .setColor(0xaf3838)
-          .setThumbnail("https://raw.githubusercontent.com/DTEAMTECH/contributions/refs/heads/main/celestia/utils/bridge_metrics_checker.png")
-          .setFooter({ text: "Made by www.dteam.tech \uD83D\uDFE0" })
+        .setTitle("Error")
+        .setDescription("You must be in a server to use this command!")
+        .setColor(0xaf3838)
+        .setThumbnail(
+          "https://raw.githubusercontent.com/DTEAMTECH/contributions/refs/heads/main/celestia/utils/bridge_metrics_checker.png",
+        )
+        .setFooter({ text: "Made by www.dteam.tech \uD83D\uDFE0" });
       return json({
         type: 4,
         data: { embeds: [embed] },
@@ -35,12 +37,14 @@ export const info: Command = {
 
     if (allBridgeNodes.length === 0) {
       const embed = new EmbedBuilder()
-          .setTitle("No subscriptions")
-          .setDescription("You are not subscribed to any bridge node id")
-          .setColor(0xf3cd37)
-          .setThumbnail("https://raw.githubusercontent.com/DTEAMTECH/contributions/refs/heads/main/celestia/utils/bridge_metrics_checker.png")
-          .setFooter({ text: "Made by www.dteam.tech \uD83D\uDFE0" })
-          .setTimestamp(new Date())
+        .setTitle("No subscriptions")
+        .setDescription("You are not subscribed to any bridge node id")
+        .setColor(0xf3cd37)
+        .setThumbnail(
+          "https://raw.githubusercontent.com/DTEAMTECH/contributions/refs/heads/main/celestia/utils/bridge_metrics_checker.png",
+        )
+        .setFooter({ text: "Made by www.dteam.tech \uD83D\uDFE0" })
+        .setTimestamp(new Date());
       return json({
         type: 4,
         data: { embeds: [embed] },
@@ -48,15 +52,17 @@ export const info: Command = {
     }
 
     const allNodes = await Promise.all(
-        allBridgeNodes.map((nodeId) => bridgeNodesAPI.buildInfo(String(nodeId))),
+      allBridgeNodes.map((nodeId) => bridgeNodesAPI.buildInfo(String(nodeId))),
     );
 
     const embed = new EmbedBuilder()
-        .setTitle(`Subscribed bridge node information`)
-        .setColor(0x7b2bf9)
-        .setThumbnail("https://raw.githubusercontent.com/DTEAMTECH/contributions/refs/heads/main/celestia/utils/bridge_metrics_checker.png")
-        .setFooter({ text: "Made by www.dteam.tech \uD83D\uDFE0" })
-        .setTimestamp(new Date())
+      .setTitle(`Subscribed bridge node information`)
+      .setColor(0x7b2bf9)
+      .setThumbnail(
+        "https://raw.githubusercontent.com/DTEAMTECH/contributions/refs/heads/main/celestia/utils/bridge_metrics_checker.png",
+      )
+      .setFooter({ text: "Made by www.dteam.tech \uD83D\uDFE0" })
+      .setTimestamp(new Date());
 
     allNodes.forEach((node) => {
       const nodeInfo: {

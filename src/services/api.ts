@@ -1,4 +1,4 @@
-import { InstantVector, PrometheusDriver, SampleValue } from "prometheus-query";
+import { InstantVector, PrometheusDriver } from "prometheus-query";
 import config from "app/config.ts";
 
 class BridgeNodesAPI {
@@ -20,7 +20,7 @@ class BridgeNodesAPI {
       new Date(),
     );
     const ipRegex = /\b(?:\d{1,3}\.){3}\d{1,3}\b/;
-    return data.filter((nodeId) => !ipRegex.test(nodeId)); 
+    return data.filter((nodeId) => !ipRegex.test(nodeId));
   }
   public async buildInfo(nodeId: string): Promise<InstantVector | null> {
     const data = await this.promQuery.instantQuery(
