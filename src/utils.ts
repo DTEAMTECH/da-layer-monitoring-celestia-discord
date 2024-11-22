@@ -11,10 +11,9 @@ type RetryOptions = {
   randomize?: boolean;
 };
 
-
 function withRetry<Args extends unknown[], Result>(
   fn: (...args: Args) => Promise<Result>,
-  options?: RetryOptions
+  options?: RetryOptions,
 ): (...args: Args) => Promise<Result> {
   return async function (...args: Args): Promise<Result> {
     return await pRetry(
@@ -32,13 +31,12 @@ function withRetry<Args extends unknown[], Result>(
         minTimeout: options?.minTimeout ?? 1000,
         maxTimeout: options?.maxTimeout ?? 5000,
         randomize: options?.randomize ?? true,
-      }
+      },
     );
   };
 }
 
-
-// todo: move to services 
+// todo: move to services
 export class DiscordApiHelper {
   public rest: REST;
   public config: {
@@ -46,14 +44,16 @@ export class DiscordApiHelper {
     clientId: string;
     guildId: string;
   };
-  sendMessage: (channelId: string, option: { message?: string; embed?: EmbedBuilder; }) => Promise<void>;
+  sendMessage: (
+    channelId: string,
+    option: { message?: string; embed?: EmbedBuilder },
+  ) => Promise<void>;
 
   constructor(config: { token: string; clientId: string; guildId: string }) {
     this.rest = new REST({ version: "10" }).setToken(config.token);
     this.config = config;
     this.sendMessage = withRetry(this.sendMessageRaw.bind(this));
   }
-  
 
   async sendMessageRaw(
     channelId: string,
