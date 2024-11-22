@@ -9,6 +9,7 @@
     "@std/encoding": "jsr:@std/encoding@^1.0.5",
     "app/": "./src/",
     "discord.js": "npm:discord.js@^14.16.3",
+    "p-retry": "npm:p-retry@^6.2.1",
     "prometheus-query": "npm:prometheus-query@^3.4.1",
     "sift/": "https://deno.land/x/sift@0.6.0/"
   },
