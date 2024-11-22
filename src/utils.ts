@@ -38,7 +38,7 @@ function withRetry<Args extends unknown[], Result>(
 }
 
 
-
+// todo: move to services 
 export class DiscordApiHelper {
   public rest: REST;
   public config: {
