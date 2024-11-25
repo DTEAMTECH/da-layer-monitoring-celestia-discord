@@ -1,59 +1,91 @@
 import { kv } from "app/services/storage.ts";
 import { bridgeNodesAPI } from "app/services/api.ts";
-import { disApi } from "app/utils.ts";
+import { disApi, isRecent } from "app/utils.ts";
 import { EmbedBuilder } from "discord.js";
-
+import alerts, { Alert, CheckResult } from "app/alerts.ts";
+import { isObject } from "app/utils.ts";
+// TODO: create resolve and alert messages
+const createAlertMessage = (title: string, text: string) =>
+  new EmbedBuilder().setTitle(title)
+    .setDescription(text)
+    .setColor(0xf3cd37)
+    .setThumbnail(
+      "https://raw.githubusercontent.com/DTEAMTECH/contributions/refs/heads/main/celestia/utils/bridge_metrics_checker.png",
+    )
+    .setFooter({ text: "Made by www.dteam.tech \uD83D\uDFE0" })
+    .setTimestamp(new Date());
+// TODO: Create global error handler and send error message to private channel
 Deno.cron("Check bridge nodes", "*/5 * * * *", async () => {
-  const CONNECTED_PEERS_THRESHOLD = 5;
-  const LAST_SYNC_THRESHOLD = 5;
   const nodesIds = await bridgeNodesAPI.getAllBridgeNodesIds();
-  const nodeCache = new Map();
+  const nodesChecks = new Map<string, {
+    check: CheckResult;
+    alert: Alert;
+  }[]>();
 
+  // colllect alerts
   for (const nodeId of nodesIds) {
-    const buildInfo = await bridgeNodesAPI.buildInfo(nodeId);
-    const connectedPeers = await bridgeNodesAPI.connectedPeers(nodeId);
-    const syncStatus = await bridgeNodesAPI.syncStatus(nodeId);
-    nodeCache.set(nodeId, { buildInfo, connectedPeers, syncStatus });
+    const checks = [];
+    for (const alert of alerts) {
+      const checkResult = await alert.check({ nodeId });
+      console.log("checkResult", checkResult);
+      checks.push({ check: checkResult, alert });
+    }
+    nodesChecks.set(nodeId, checks);
   }
 
   const subs = kv.list({
     prefix: ["subscription"],
   });
 
-  for await (const { key, value: _value } of subs) {
+  for await (const { key, value } of subs) {
     const [_, userId, nodeId] = key;
-    const nodeData = nodeCache.get(nodeId);
+    console.log("subs", value);
+    if (!isObject(value)) continue;
+
+    const nodeData = nodesChecks.get(String(nodeId));
     if (!nodeData) continue;
 
-    const { connectedPeers, syncStatus } = nodeData;
-    const grabLastSyncStatus = syncStatus.reverse().slice(-LAST_SYNC_THRESHOLD);
-    const sumSync = grabLastSyncStatus.reduce(
-        (acc: number, curr: { value: number }) => acc + curr.value,
-        0,
-    );
+    const alerted: Record<string, string> =
+      isObject(value) && "alerted" in value
+        ? value.alerted as Record<string, string>
+        : {};
 
-    if (sumSync >= LAST_SYNC_THRESHOLD) {
-      const embed = new EmbedBuilder()
-          .setTitle("Warning! Node sync alert")
-          .setDescription(`<@${String(userId)}>, node **\`${String(nodeId)}\`** is out of sync`)
-          .setColor(0xf3cd37)
-          .setThumbnail("https://raw.githubusercontent.com/DTEAMTECH/contributions/refs/heads/main/celestia/utils/bridge_metrics_checker.png")
-          .setFooter({ text: "Made by www.dteam.tech \uD83D\uDFE0" })
-          .setTimestamp(new Date())
+    const newAlerted: Record<string, string> = {};
 
-      disApi.sendEmbedMessageBotChannel(embed);
+    for (const alert of nodeData) {
+      const isFired = alert.check.isFired;
+      const message = alert.alert.message(String(userId), String(nodeId));
+      const embededAlertMessage = isFired
+        ? createAlertMessage(
+          message.alertMessage.title,
+          message.alertMessage.text,
+        )
+        : createAlertMessage(
+          message.resolveMessage.title,
+          message.resolveMessage.text,
+        );
+
+      if (isFired) {
+        const alertedTimeIso = alerted[alert.alert.name];
+        if (alertedTimeIso && isRecent(alertedTimeIso)) {
+          newAlerted[alert.alert.name] = alertedTimeIso;
+          continue;
+        }
+        await disApi.sendEmbedMessageBotChannel(embededAlertMessage);
+        newAlerted[alert.alert.name] = new Date().toISOString();
+      } else if (alert.alert.name in alerted) {
+        await disApi.sendEmbedMessageBotChannel(embededAlertMessage);
+        delete alerted[alert.alert.name];
+      }
     }
 
-    if (connectedPeers.value.value < CONNECTED_PEERS_THRESHOLD && sumSync < LAST_SYNC_THRESHOLD) {
-      const embed = new EmbedBuilder()
-          .setTitle("Warning! Low peer count alert")
-          .setDescription(`<@${String(userId)}>, node **\`${String(nodeId)}\`** has less than ${CONNECTED_PEERS_THRESHOLD} connected peers`)
-          .setColor(0xf3cd37)
-          .setThumbnail("https://raw.githubusercontent.com/DTEAMTECH/contributions/refs/heads/main/celestia/utils/bridge_metrics_checker.png")
-          .setFooter({ text: "Made by www.dteam.tech \uD83D\uDFE0" })
-          .setTimestamp(new Date())
-
-      disApi.sendEmbedMessageBotChannel(embed);
-    }
+    await kv.set(["subscription", userId, nodeId], {
+      userId,
+      nodeBridgeId: nodeId,
+      subscribedAt: "subscribedAt" in value
+        ? value.subscribedAt
+        : new Date().toISOString(),
+      alerted: newAlerted,
+    });
   }
 });
