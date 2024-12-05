@@ -33,4 +33,4 @@ class BridgeNodesAPI {
     return result;
   }
 }
-export const bridgeNodesAPI = new BridgeNodesAPI(config.PROMETHUES_URL);
+export const bridgeNodesAPI = new BridgeNodesAPI(config.PROMETHEUS_URL);

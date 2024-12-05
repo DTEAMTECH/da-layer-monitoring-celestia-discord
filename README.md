@@ -1,6 +1,6 @@
 # RUN
 
-Run Promethues in './promethues' with:
+Run Prometheus in './prometheus' with:
 
 ```bash
 docker compose up
