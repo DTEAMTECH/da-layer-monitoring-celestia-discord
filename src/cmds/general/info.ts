@@ -19,7 +19,7 @@ export const info: Command = {
         .setThumbnail(
           "https://raw.githubusercontent.com/DTEAMTECH/contributions/refs/heads/main/celestia/utils/bridge_metrics_checker.png",
         )
-        .setFooter({ text: "Made by www.dteam.tech \uD83D\uDFE0" });
+        .setFooter({ text: "Powered by www.dteam.tech \uD83D\uDFE0" });
       return json({
         type: 4,
         data: { embeds: [embed] },
@@ -43,7 +43,7 @@ export const info: Command = {
         .setThumbnail(
           "https://raw.githubusercontent.com/DTEAMTECH/contributions/refs/heads/main/celestia/utils/bridge_metrics_checker.png",
         )
-        .setFooter({ text: "Made by www.dteam.tech \uD83D\uDFE0" })
+        .setFooter({ text: "Powered by www.dteam.tech \uD83D\uDFE0" })
         .setTimestamp(new Date());
       return json({
         type: 4,
@@ -56,12 +56,12 @@ export const info: Command = {
     );
 
     const embed = new EmbedBuilder()
-      .setTitle(`Subscribed bridge node information`)
+      .setTitle(`Subscribed Bridge Node Information`)
       .setColor(0x7b2bf9)
       .setThumbnail(
         "https://raw.githubusercontent.com/DTEAMTECH/contributions/refs/heads/main/celestia/utils/bridge_metrics_checker.png",
       )
-      .setFooter({ text: "Made by www.dteam.tech \uD83D\uDFE0" })
+      .setFooter({ text: "Powered by www.dteam.tech \uD83D\uDFE0" })
       .setTimestamp(new Date());
 
     allNodes.forEach((node) => {
