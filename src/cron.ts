@@ -8,11 +8,11 @@ import { isObject } from "app/utils.ts";
 const createAlertMessage = (title: string, text: string) =>
   new EmbedBuilder().setTitle(title)
     .setDescription(text)
-    .setColor(0xf3cd37)
+    .setColor(title.indexOf('Warning') !== -1 ? 0xaf3838 : 0x32b76c)
     .setThumbnail(
       "https://raw.githubusercontent.com/DTEAMTECH/contributions/refs/heads/main/celestia/utils/bridge_metrics_checker.png",
     )
-    .setFooter({ text: "Made by www.dteam.tech \uD83D\uDFE0" })
+    .setFooter({ text: "Powered by www.dteam.tech \uD83D\uDFE0" })
     .setTimestamp(new Date());
 // TODO: Create global error handler and send error message to private channel
 Deno.cron("Check bridge nodes", "*/5 * * * *", async () => {
@@ -22,7 +22,7 @@ Deno.cron("Check bridge nodes", "*/5 * * * *", async () => {
     alert: Alert;
   }[]>();
 
-  // colllect alerts
+  // collect alerts
   for (const nodeId of nodesIds) {
     const checks = [];
     for (const alert of alerts) {
