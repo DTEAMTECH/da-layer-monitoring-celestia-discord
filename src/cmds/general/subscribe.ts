@@ -69,7 +69,7 @@ export const subscribe: Command = {
         .setThumbnail(
           "https://raw.githubusercontent.com/DTEAMTECH/contributions/refs/heads/main/celestia/utils/bridge_metrics_checker.png",
         )
-        .setFooter({ text: "Made by www.dteam.tech \uD83D\uDFE0" });
+        .setFooter({ text: "Powered by www.dteam.tech \uD83D\uDFE0" });
       return json({
         type: 4,
         data: {
@@ -84,13 +84,13 @@ export const subscribe: Command = {
     const param = data.options?.find((opt) => opt.name === "id");
     if (!param) {
       const embed = new EmbedBuilder()
-        .setTitle("Missing parameters")
+        .setTitle("Missing Parameters")
         .setDescription("You must provide parameters")
         .setColor(0xaf3838)
         .setThumbnail(
           "https://raw.githubusercontent.com/DTEAMTECH/contributions/refs/heads/main/celestia/utils/bridge_metrics_checker.png",
         )
-        .setFooter({ text: "Made by www.dteam.tech \uD83D\uDFE0" })
+        .setFooter({ text: "Powered by www.dteam.tech \uD83D\uDFE0" })
         .setTimestamp(new Date());
       return json({
         type: 4,
@@ -101,13 +101,13 @@ export const subscribe: Command = {
     }
     if (param.type !== 3) {
       const embed = new EmbedBuilder()
-        .setTitle("Invalid parameters")
+        .setTitle("Invalid Parameters")
         .setDescription("Invalid type of parameters")
         .setColor(0xaf3838)
         .setThumbnail(
           "https://raw.githubusercontent.com/DTEAMTECH/contributions/refs/heads/main/celestia/utils/bridge_metrics_checker.png",
         )
-        .setFooter({ text: "Made by www.dteam.tech \uD83D\uDFE0" })
+        .setFooter({ text: "Powered by www.dteam.tech \uD83D\uDFE0" })
         .setTimestamp(new Date());
       return json({
         type: 4,
@@ -123,7 +123,7 @@ export const subscribe: Command = {
     const nodesIds = await bridgeNodesAPI.getAllBridgeNodesIds();
     if (!nodesIds.includes(param.value)) {
       const embed = new EmbedBuilder()
-        .setTitle("Invalid node bridge id")
+        .setTitle("Invalid Node Bridge Id")
         .setDescription(
           "Please check that your bridge id is correct and try again",
         )
@@ -131,7 +131,7 @@ export const subscribe: Command = {
         .setThumbnail(
           "https://raw.githubusercontent.com/DTEAMTECH/contributions/refs/heads/main/celestia/utils/bridge_metrics_checker.png",
         )
-        .setFooter({ text: "Made by www.dteam.tech \uD83D\uDFE0" })
+        .setFooter({ text: "Powered by www.dteam.tech \uD83D\uDFE0" })
         .setTimestamp(new Date());
 
       return json({
@@ -149,13 +149,13 @@ export const subscribe: Command = {
     });
 
     const embed = new EmbedBuilder()
-      .setTitle("Subscription success")
+      .setTitle("Subscription Success")
       .setDescription(`You have been subscribed to **\`${param.value}\`**`)
       .setColor(0x7b2bf9)
       .setThumbnail(
         "https://raw.githubusercontent.com/DTEAMTECH/contributions/refs/heads/main/celestia/utils/bridge_metrics_checker.png",
       )
-      .setFooter({ text: "Made by www.dteam.tech \uD83D\uDFE0" })
+      .setFooter({ text: "Powered by www.dteam.tech \uD83D\uDFE0" })
       .setTimestamp(new Date());
 
     return json({
