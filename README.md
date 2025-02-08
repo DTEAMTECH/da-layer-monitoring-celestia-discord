@@ -30,13 +30,13 @@
 
 ## Supported Commands
 
-- **subscribe**  
+- `/subscribe`  
   Allows you to subscribe to one or more nodes to receive health and status updates for each one.
 
-- **unsubscribe**  
+- `/unsubscribe`  
   Enables you to remove your existing subscriptions for selected nodes, helping you keep your monitoring list organized.
 
-- **info**  
+- `/info`  
   Fetches detailed information about your subscribed nodes, including:  
   - Bridge Node ID  
   - Build Version  
