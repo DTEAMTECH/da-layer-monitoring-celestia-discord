@@ -1,68 +1,66 @@
 import {
-  CONNECTED_PEERS_THRESHOLD,
-  OUT_OF_SYNC_HEIGHT_THRESHOLD,
-  SYNC_TIME_CHECK,
+    CONNECTED_PEERS_THRESHOLD,
+    OUT_OF_SYNC_HEIGHT_THRESHOLD,
+    SYNC_TIME_CHECK,
 } from "app/constant.ts";
 import { bridgeNodesAPI } from "app/services/api.ts";
+
 type checkPayload = {
-  nodeId: string;
+    nodeId: string;
 };
 type Message = {
-  title: string;
-  text: string;
+    title: string;
+    text: string;
 };
 export type CheckResult = {
-  isFired: boolean;
-  value: number | string;
+    isFired: boolean;
+    value: number | string;
 };
 export type Alert = {
-  name: string;
-  message: (userId: string, nodeId: string) => {
-    alertMessage: Message;
-    resolveMessage: Message;
-  };
-  check(
-    payload: checkPayload,
-  ): Promise<
-    {
-      isFired: boolean;
-      value: number | string;
-    }
-  >;
-  // todo: should we pending for 5 minutes before sending the alert?
-  // 1 cycle = ~5 minutes
-  // forCycle: number;
+    name: string;
+    message: (userId: string, nodeId: string) => {
+        alertMessage: Message;
+        resolveMessage: Message;
+    };
+    check(
+        payload: checkPayload,
+    ): Promise<{
+        isFired: boolean;
+        value: number | string;
+    }>;
+    // todo: should we pending for 5 minutes before sending the alert?
+    // 1 cycle = ~5 minutes
+    // forCycle: number;
 };
 
 async function highstsubjectiveHeadGauge() {
-  if (highstsubjectiveHeadGauge.cache) {
-    return highstsubjectiveHeadGauge.cache;
-  }
+    if (highstsubjectiveHeadGauge.cache) {
+        return highstsubjectiveHeadGauge.cache;
+    }
 
-  const result = await bridgeNodesAPI.promQuery.instantQuery(
-    'max(hdr_sync_subjective_head_gauge{exported_job="celestia/Bridge"})',
-  );
+    const result = await bridgeNodesAPI.promQuery.instantQuery(
+        'max(hdr_sync_subjective_head_gauge{exported_job="celestia/Bridge"})',
+    );
 
-  highstsubjectiveHeadGauge.cache = result.result[0].value.value ?? null;
-  return result.result[0].value.value ?? null;
+    highstsubjectiveHeadGauge.cache = result.result[0].value.value ?? null;
+    return result.result[0].value.value ?? null;
 }
 
 highstsubjectiveHeadGauge.cache = null as null | number;
+
 const alerts = [
   {
-    name: "TooFewPeers",
-    message: (userId: string, nodeId: string) => ({
-      alertMessage: {
-        title: "Warning! Low peer count alert",
-        text:
-          `<@${userId}>, node **\`${nodeId}\`** has less than ${CONNECTED_PEERS_THRESHOLD} connected peers`,
-      },
-      resolveMessage: {
-        title: "Low peer count alert resolved",
-        text:
-          `<@${userId}>, node **\`${nodeId}\`** has more than ${CONNECTED_PEERS_THRESHOLD} connected peers`,
-      },
-    }),
+      name: "LowPeersCount",
+      message: (userId: string, nodeId: string) => ({
+          alertMessage: {
+              title: "**Warning!** Low Peer Count Alert",
+              text: `**<@${userId}> take action!**\n\n**\`${nodeId}\`** has fewer than ${CONNECTED_PEERS_THRESHOLD} connected peers.`,
+          },
+          resolveMessage: {
+              title: "**Resolved!** Low Peer Count Alert",
+              text: `**<@${userId}> you can chillin' now!**\n\n**\`${nodeId}\`** now has more than ${CONNECTED_PEERS_THRESHOLD} connected peers.`,
+          },
+      }),
     async check(payload: checkPayload) {
       const { nodeId } = payload;
       const connectedPeers = await bridgeNodesAPI.promQuery.instantQuery(
@@ -76,17 +74,17 @@ const alerts = [
     },
   },
   {
-    name: "StalledBlocks",
-    message: (userId: string, nodeId: string) => ({
-      alertMessage: {
-        title: "Warning! Stalled blocks alert",
-        text: `<@${userId}>, node **\`${nodeId}\`** has stalled blocks`,
-      },
-      resolveMessage: {
-        title: "Stalled blocks alert resolved",
-        text: `<@${userId}>, node **\`${nodeId}\`** has no stalled blocks`,
-      },
-    }),
+      name: "StalledBlocks",
+      message: (userId: string, nodeId: string) => ({
+          alertMessage: {
+              title: "**Warning!** Stalled Blocks Alert",
+              text: `**<@${userId}> take action!**\n\n**\`${nodeId}\`** has stalled blocks.`,
+          },
+          resolveMessage: {
+              title: "**Resolved!** Stalled Blocks Alert",
+              text: `**<@${userId}> you can chillin' now!**\n\n**\`${nodeId}\`** has no stalled blocks now.`,
+          },
+      }),
     async check(payload: checkPayload) {
       const { nodeId } = payload;
       const hightChange = await bridgeNodesAPI.promQuery.instantQuery(
@@ -100,17 +98,17 @@ const alerts = [
     },
   },
   {
-    name: "OutOfSync",
-    message: (userId: string, nodeId: string) => ({
-      alertMessage: {
-        title: "Warning! Node sync alert",
-        text: `<@${userId}>, node **\`${nodeId}\`** is out of sync`,
-      },
-      resolveMessage: {
-        title: "Node sync alert resolved",
-        text: `<@${userId}>, node **\`${nodeId}\`** is in sync`,
-      },
-    }),
+      name: "OutOfSync",
+      message: (userId: string, nodeId: string) => ({
+          alertMessage: {
+              title: "**Warning!** Node Sync Alert",
+              text: `**<@${userId}> take action!**\n\n**\`${nodeId}\`** is out of sync.`,
+          },
+          resolveMessage: {
+              title: "**Resolved!** Node Sync Alert",
+              text: `**<@${userId}> you can chillin' now!**\n\n**\`${nodeId}\`** is synced now.`,
+          },
+      }),
     async check(payload: checkPayload) {
       const { nodeId } = payload;
       const highestSubjectiveHeadGaugeValue = await highstsubjectiveHeadGauge();
@@ -129,17 +127,17 @@ const alerts = [
     },
   },
   {
-    name: "NoArchivalPeers",
-    message: (userId: string, nodeId: string) => ({
-      alertMessage: {
-        title: "Warning! No archival peers alert",
-        text: `<@${userId}>, node **\`${nodeId}\`** has no archival peers`,
-      },
-      resolveMessage: {
-        title: "No archival peers alert resolved",
-        text: `<@${userId}>, node **\`${nodeId}\`** has archival peers`,
-      },
-    }),
+      name: "NoArchivalPeers",
+      message: (userId: string, nodeId: string) => ({
+          alertMessage: {
+              title: "**Warning!** No Archival Peers Alert",
+              text: `**<@${userId}> take action!**\n\n**\`${nodeId}\`** has no archival peers.`,
+          },
+          resolveMessage: {
+              title: "**Resolved!** No Archival Peers Alert",
+              text: `**<@${userId}> you can chillin' now!**\n\n**\`${nodeId}\`** now has archival peers.`,
+          },
+      }),
     async check(payload: checkPayload) {
       const { nodeId } = payload;
       const connectedPeers = await bridgeNodesAPI.promQuery.instantQuery(
@@ -158,21 +156,18 @@ export default alerts as Alert[];
 
 // const alertsMock = [
 //     {
-//         name: "TooFewPeers",
+//         name: "LowPeersCount",
 //         message: (userId: string, nodeId: string) => ({
 //             alertMessage: {
-//                 title: "Warning! Low peer count alert",
-//                 text:
-//                     `<@${userId}>, node **\`${nodeId}\`** has less than ${CONNECTED_PEERS_THRESHOLD} connected peers`,
+//                 title: "**Warning!** Low Peer Count Alert",
+//                 text: `**<@${userId}> take action!**\n\n**\`${nodeId}\`** has fewer than ${CONNECTED_PEERS_THRESHOLD} connected peers.`,
 //             },
 //             resolveMessage: {
-//                 title: "Low peer count alert resolved",
-//                 text:
-//                     `<@${userId}>, node **\`${nodeId}\`** has more than ${CONNECTED_PEERS_THRESHOLD} connected peers`,
+//                 title: "**Resolved!** Low Peer Count Alert",
+//                 text: `**<@${userId}> you can chillin' now!**\n\n**\`${nodeId}\`** now has more than ${CONNECTED_PEERS_THRESHOLD} connected peers.`,
 //             },
 //         }),
 //         async check(payload: checkPayload) {
-
 //             return {
 //                 isFired: false,
 //                 value: 1,
@@ -183,17 +178,15 @@ export default alerts as Alert[];
 //         name: "StalledBlocks",
 //         message: (userId: string, nodeId: string) => ({
 //             alertMessage: {
-//                 title: "Warning! Stalled blocks alert",
-//                 text: `<@${userId}>, node **\`${nodeId}\`** has stalled blocks`,
+//                 title: "**Warning!** Stalled Blocks Alert",
+//                 text: `**<@${userId}> take action!**\n\n**\`${nodeId}\`** has stalled blocks.`,
 //             },
 //             resolveMessage: {
-//                 title: "Stalled blocks alert resolved",
-//                 text:
-//                     `<@${userId}>, node **\`${nodeId}\`** has no stalled blocks`,
+//                 title: "**Resolved!** Stalled Blocks Alert",
+//                 text: `**<@${userId}> you can chillin' now!**\n\n**\`${nodeId}\`** has no stalled blocks now.`,
 //             },
 //         }),
 //         async check(payload: checkPayload) {
-
 //             return {
 //                 isFired: false,
 //                 value: 1,
@@ -204,12 +197,12 @@ export default alerts as Alert[];
 //         name: "OutOfSync",
 //         message: (userId: string, nodeId: string) => ({
 //             alertMessage: {
-//                 title: "Warning! Node sync alert",
-//                 text: `<@${userId}>, node **\`${nodeId}\`** is out of sync`,
+//                 title: "**Warning!** Node Sync Alert",
+//                 text: `**<@${userId}> take action!**\n\n**\`${nodeId}\`** is out of sync.`,
 //             },
 //             resolveMessage: {
-//                 title: "Node sync alert resolved",
-//                 text: `<@${userId}>, node **\`${nodeId}\`** is in sync`,
+//                 title: "**Resolved!** Node Sync Alert",
+//                 text: `**<@${userId}> you can chillin' now!**\n\n**\`${nodeId}\`** is synced now.`,
 //             },
 //         }),
 //         async check(payload: checkPayload) {
@@ -223,13 +216,12 @@ export default alerts as Alert[];
 //         name: "NoArchivalPeers",
 //         message: (userId: string, nodeId: string) => ({
 //             alertMessage: {
-//                 title: "Warning! No archival peers alert",
-//                 text:
-//                     `<@${userId}>, node **\`${nodeId}\`** has no archival peers`,
+//                 title: "**Warning!** No Archival Peers Alert",
+//                 text: `**<@${userId}> take action!**\n\n**\`${nodeId}\`** has no archival peers.`,
 //             },
 //             resolveMessage: {
-//                 title: "No archival peers alert resolved",
-//                 text: `<@${userId}>, node **\`${nodeId}\`** has archival peers`,
+//                 title: "**Resolved!** No Archival Peers Alert",
+//                 text: `**<@${userId}> you can chillin' now!**\n\n**\`${nodeId}\`** now has archival peers.`,
 //             },
 //         }),
 //         async check(payload: checkPayload) {
@@ -240,4 +232,5 @@ export default alerts as Alert[];
 //         },
 //     },
 // ];
+//
 // export default alertsMock as Alert[];
