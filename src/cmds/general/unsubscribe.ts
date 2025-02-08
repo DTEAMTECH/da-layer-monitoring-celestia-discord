@@ -44,13 +44,13 @@ export const unsubscribe: Command = {
 
     if (!subscribedNodes.length) {
       const embed = new EmbedBuilder()
-        .setTitle("No subscriptions")
+        .setTitle("No Subscriptions")
         .setDescription("You have no subscriptions to unsubscribe from")
         .setColor(0xf3cd37)
         .setThumbnail(
           "https://raw.githubusercontent.com/DTEAMTECH/contributions/refs/heads/main/celestia/utils/bridge_metrics_checker.png",
         )
-        .setFooter({ text: "Made by www.dteam.tech \uD83D\uDFE0" })
+        .setFooter({ text: "Powered by www.dteam.tech \uD83D\uDFE0" })
         .setTimestamp(new Date());
       return json({
         type: 4,
@@ -77,7 +77,7 @@ export const unsubscribe: Command = {
         .setThumbnail(
           "https://raw.githubusercontent.com/DTEAMTECH/contributions/refs/heads/main/celestia/utils/bridge_metrics_checker.png",
         )
-        .setFooter({ text: "Made by www.dteam.tech \uD83D\uDFE0" });
+        .setFooter({ text: "Powered by www.dteam.tech \uD83D\uDFE0" });
       return json({
         type: 4,
         data: { embeds: [embed] },
@@ -88,13 +88,13 @@ export const unsubscribe: Command = {
     const param = data.options?.find((opt) => opt.name === "id");
     if (!param || param.type !== 3) {
       const embed = new EmbedBuilder()
-        .setTitle("Invalid parameters")
+        .setTitle("Invalid Parameters")
         .setDescription("You must provide a valid bridge node id")
         .setColor(0xaf3838)
         .setThumbnail(
           "https://raw.githubusercontent.com/DTEAMTECH/contributions/refs/heads/main/celestia/utils/bridge_metrics_checker.png",
         )
-        .setFooter({ text: "Made by www.dteam.tech \uD83D\uDFE0" })
+        .setFooter({ text: "Powered by www.dteam.tech \uD83D\uDFE0" })
         .setTimestamp(new Date());
       return json({
         type: 4,
@@ -105,13 +105,13 @@ export const unsubscribe: Command = {
     const bridgeNode = await kv.get(["subscription", userId, param.value]);
     if (!bridgeNode.value) {
       const embed = new EmbedBuilder()
-        .setTitle("Not subscribed")
+        .setTitle("Not Subscribed")
         .setDescription("You are not subscribed to this bridge node id")
         .setColor(0xaf3838)
         .setThumbnail(
           "https://raw.githubusercontent.com/DTEAMTECH/contributions/refs/heads/main/celestia/utils/bridge_metrics_checker.png",
         )
-        .setFooter({ text: "Made by www.dteam.tech \uD83D\uDFE0" })
+        .setFooter({ text: "Powered by www.dteam.tech \uD83D\uDFE0" })
         .setTimestamp(new Date());
       return json({
         type: 4,
@@ -121,7 +121,7 @@ export const unsubscribe: Command = {
 
     await kv.delete(["subscription", userId, param.value]);
     const embed = new EmbedBuilder()
-      .setTitle("Unsubscribed successfully")
+      .setTitle("Unsubscribed Successfully")
       .setDescription(
         `You have successfully unsubscribed from **\`${param.value}\`**`,
       )
@@ -129,7 +129,7 @@ export const unsubscribe: Command = {
       .setThumbnail(
         "https://raw.githubusercontent.com/DTEAMTECH/contributions/refs/heads/main/celestia/utils/bridge_metrics_checker.png",
       )
-      .setFooter({ text: "Made by www.dteam.tech \uD83D\uDFE0" })
+      .setFooter({ text: "Powered by www.dteam.tech \uD83D\uDFE0" })
       .setTimestamp(new Date());
     return json({
       type: 4,
