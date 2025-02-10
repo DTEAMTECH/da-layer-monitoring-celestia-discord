@@ -14,7 +14,7 @@ import {
 } from "discord.js";
 
 const command = new SlashCommandBuilder()
-  .setName("unsubscribe")
+  .setName("subscribe")
   .setDescription("Subscribe for the updates about your bridge node")
   .addStringOption((option: SlashCommandStringOption) =>
     option.setName("id")
