@@ -10,7 +10,7 @@ const createAlertMessage = (title: string, text: string) =>
         .setDescription(text)
         .setColor(title.indexOf('Warning') !== -1 ? 0xaf3838 : 0x32b76c)
         .setThumbnail(
-            "https://raw.githubusercontent.com/DTEAMTECH/contributions/refs/heads/main/celestia/utils/bridge_metrics_checker.png",
+            "https://raw.githubusercontent.com/DTEAMTECH/contributions/refs/heads/main/celestia/utils/da_layer_metrics.png",
         )
         .setFooter({ text: "Powered by www.dteam.tech \uD83D\uDFE0" })
         .setTimestamp(new Date());
