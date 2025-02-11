@@ -3,7 +3,7 @@ import {
     OUT_OF_SYNC_HEIGHT_THRESHOLD,
     SYNC_TIME_CHECK,
 } from "app/constant.ts";
-import { bridgeNodesAPI } from "app/services/api.ts";
+import { nodesAPI } from "app/services/api.ts";
 
 type checkPayload = {
     nodeId: string;
@@ -18,7 +18,7 @@ export type CheckResult = {
 };
 export type Alert = {
     name: string;
-    message: (userId: string, nodeId: string) => {
+    message: (userId: string, nodeId: string, nodeType: string) => {
         alertMessage: Message;
         resolveMessage: Message;
     };
@@ -38,8 +38,8 @@ async function highstsubjectiveHeadGauge() {
         return highstsubjectiveHeadGauge.cache;
     }
 
-    const result = await bridgeNodesAPI.promQuery.instantQuery(
-        'max(hdr_sync_subjective_head_gauge{exported_job="celestia/Bridge"})',
+    const result = await nodesAPI.promQuery.instantQuery(
+        `max(hdr_sync_subjective_head_gauge{exported_job=~"celestia/.*"})`,
     );
 
     highstsubjectiveHeadGauge.cache = result.result[0].value.value ?? null;
@@ -51,20 +51,20 @@ highstsubjectiveHeadGauge.cache = null as null | number;
 const alerts = [
   {
       name: "LowPeersCount",
-      message: (userId: string, nodeId: string) => ({
+      message: (userId: string, nodeId: string, nodeType: string) => ({
           alertMessage: {
               title: "**Warning!** Low Peer Count Alert",
-              text: `**<@${userId}> take action!**\n\n**\`${nodeId}\`** has fewer than ${CONNECTED_PEERS_THRESHOLD} connected peers.`,
+              text: `**<@${userId}> take action! Your \`${nodeType}\` node**\n\n**\`${nodeId}\`** has fewer than ${CONNECTED_PEERS_THRESHOLD} connected peers.`,
           },
           resolveMessage: {
               title: "**Resolved!** Low Peer Count Alert",
-              text: `**<@${userId}> you can chillin' now!**\n\n**\`${nodeId}\`** now has more than ${CONNECTED_PEERS_THRESHOLD} connected peers.`,
+              text: `**<@${userId}> you can chillin' now! Your \`${nodeType}\` node**\n\n**\`${nodeId}\`** now has more than ${CONNECTED_PEERS_THRESHOLD} connected peers.`,
           },
       }),
     async check(payload: checkPayload) {
       const { nodeId } = payload;
-      const connectedPeers = await bridgeNodesAPI.promQuery.instantQuery(
-        `full_discovery_amount_of_peers{exported_instance="${nodeId}", exported_job="celestia/Bridge"}`,
+      const connectedPeers = await nodesAPI.promQuery.instantQuery(
+        `full_discovery_amount_of_peers{exported_instance="${nodeId}"}`,
       );
       const [data] = connectedPeers.result;
       return {
@@ -75,20 +75,20 @@ const alerts = [
   },
   {
       name: "StalledBlocks",
-      message: (userId: string, nodeId: string) => ({
+      message: (userId: string, nodeId: string, nodeType: string) => ({
           alertMessage: {
               title: "**Warning!** Stalled Blocks Alert",
-              text: `**<@${userId}> take action!**\n\n**\`${nodeId}\`** has stalled blocks.`,
+              text: `**<@${userId}> take action! Your \`${nodeType}\` node**\n\n**\`${nodeId}\`** has stalled blocks.`,
           },
           resolveMessage: {
               title: "**Resolved!** Stalled Blocks Alert",
-              text: `**<@${userId}> you can chillin' now!**\n\n**\`${nodeId}\`** has no stalled blocks now.`,
+              text: `**<@${userId}> you can chillin' now! Your \`${nodeType}\` node**\n\n**\`${nodeId}\`** has no stalled blocks now.`,
           },
       }),
     async check(payload: checkPayload) {
       const { nodeId } = payload;
-      const hightChange = await bridgeNodesAPI.promQuery.instantQuery(
-        `increase(hdr_sync_subjective_head_gauge{exported_instance="${nodeId}", exported_job="celestia/Bridge"}[${SYNC_TIME_CHECK}])`,
+      const hightChange = await nodesAPI.promQuery.instantQuery(
+        `increase(hdr_sync_subjective_head_gauge{exported_instance="${nodeId}"}[${SYNC_TIME_CHECK}])`,
       );
       const [data] = hightChange.result;
       return {
@@ -99,22 +99,22 @@ const alerts = [
   },
   {
       name: "OutOfSync",
-      message: (userId: string, nodeId: string) => ({
+      message: (userId: string, nodeId: string, nodeType: string) => ({
           alertMessage: {
               title: "**Warning!** Node Sync Alert",
-              text: `**<@${userId}> take action!**\n\n**\`${nodeId}\`** is out of sync.`,
+              text: `**<@${userId}> take action! Your \`${nodeType}\` node**\n\n**\`${nodeId}\`** is out of sync.`,
           },
           resolveMessage: {
               title: "**Resolved!** Node Sync Alert",
-              text: `**<@${userId}> you can chillin' now!**\n\n**\`${nodeId}\`** is synced now.`,
+              text: `**<@${userId}> you can chillin' now! Your \`${nodeType}\` node**\n\n**\`${nodeId}\`** is synced now.`,
           },
       }),
     async check(payload: checkPayload) {
       const { nodeId } = payload;
       const highestSubjectiveHeadGaugeValue = await highstsubjectiveHeadGauge();
-      const hightOfNodeResult = await bridgeNodesAPI.promQuery
+      const hightOfNodeResult = await nodesAPI.promQuery
         .instantQuery(
-          `hdr_sync_subjective_head_gauge{exported_job="celestia/Bridge", exported_instance="${nodeId}"}`,
+          `hdr_sync_subjective_head_gauge{exported_instance="${nodeId}"}`,
         );
       const [data] = hightOfNodeResult.result;
       return {
@@ -128,20 +128,20 @@ const alerts = [
   },
   {
       name: "NoArchivalPeers",
-      message: (userId: string, nodeId: string) => ({
+      message: (userId: string, nodeId: string, nodeType: string) => ({
           alertMessage: {
               title: "**Warning!** No Archival Peers Alert",
-              text: `**<@${userId}> take action!**\n\n**\`${nodeId}\`** has no archival peers.`,
+              text: `**<@${userId}> take action! Your \`${nodeType}\` node**\n\n**\`${nodeId}\`** has no archival peers.`,
           },
           resolveMessage: {
               title: "**Resolved!** No Archival Peers Alert",
-              text: `**<@${userId}> you can chillin' now!**\n\n**\`${nodeId}\`** now has archival peers.`,
+              text: `**<@${userId}> you can chillin' now! Your \`${nodeType}\` node**\n\n**\`${nodeId}\`** now has archival peers.`,
           },
       }),
     async check(payload: checkPayload) {
       const { nodeId } = payload;
-      const connectedPeers = await bridgeNodesAPI.promQuery.instantQuery(
-        `archival_discovery_amount_of_peers{exported_instance="${nodeId}", exported_job="celestia/Bridge"}`,
+      const connectedPeers = await nodesAPI.promQuery.instantQuery(
+        `archival_discovery_amount_of_peers{exported_instance="${nodeId}"}`,
       );
       const [data] = connectedPeers.result;
       return {
