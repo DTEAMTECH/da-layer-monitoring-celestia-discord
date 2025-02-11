@@ -54,11 +54,11 @@ const alerts = [
       message: (userId: string, nodeId: string, nodeType: string) => ({
           alertMessage: {
               title: "**Warning!** Low Peer Count Alert",
-              text: `**<@${userId}> take action! Your \`${nodeType}\` node**\n\n**\`${nodeId}\`** has fewer than ${CONNECTED_PEERS_THRESHOLD} connected peers.`,
+              text: `**<@${userId}> take action! Your${" \`" + nodeType + "\` " || " "}node**\n\n**\`${nodeId}\`** has fewer than ${CONNECTED_PEERS_THRESHOLD} connected peers.`,
           },
           resolveMessage: {
               title: "**Resolved!** Low Peer Count Alert",
-              text: `**<@${userId}> you can chillin' now! Your \`${nodeType}\` node**\n\n**\`${nodeId}\`** now has more than ${CONNECTED_PEERS_THRESHOLD} connected peers.`,
+              text: `**<@${userId}> you can chillin' now! Your${" \`" + nodeType + "\` " || " "}node**\n\n**\`${nodeId}\`** now has more than ${CONNECTED_PEERS_THRESHOLD} connected peers.`,
           },
       }),
     async check(payload: checkPayload) {
@@ -78,11 +78,11 @@ const alerts = [
       message: (userId: string, nodeId: string, nodeType: string) => ({
           alertMessage: {
               title: "**Warning!** Stalled Blocks Alert",
-              text: `**<@${userId}> take action! Your \`${nodeType}\` node**\n\n**\`${nodeId}\`** has stalled blocks.`,
+              text: `**<@${userId}> take action! Your${" \`" + nodeType + "\` " || " "}node**\n\n**\`${nodeId}\`** has stalled blocks.`,
           },
           resolveMessage: {
               title: "**Resolved!** Stalled Blocks Alert",
-              text: `**<@${userId}> you can chillin' now! Your \`${nodeType}\` node**\n\n**\`${nodeId}\`** has no stalled blocks now.`,
+              text: `**<@${userId}> you can chillin' now! Your${" \`" + nodeType + "\` " || " "}node**\n\n**\`${nodeId}\`** has no stalled blocks now.`,
           },
       }),
     async check(payload: checkPayload) {
@@ -102,11 +102,11 @@ const alerts = [
       message: (userId: string, nodeId: string, nodeType: string) => ({
           alertMessage: {
               title: "**Warning!** Node Sync Alert",
-              text: `**<@${userId}> take action! Your \`${nodeType}\` node**\n\n**\`${nodeId}\`** is out of sync.`,
+              text: `**<@${userId}> take action! Your${" \`" + nodeType + "\` " || " "}node**\n\n**\`${nodeId}\`** is out of sync.`,
           },
           resolveMessage: {
               title: "**Resolved!** Node Sync Alert",
-              text: `**<@${userId}> you can chillin' now! Your \`${nodeType}\` node**\n\n**\`${nodeId}\`** is synced now.`,
+              text: `**<@${userId}> you can chillin' now! Your${" \`" + nodeType + "\` " || " "}node**\n\n**\`${nodeId}\`** is synced now.`,
           },
       }),
     async check(payload: checkPayload) {
@@ -131,11 +131,11 @@ const alerts = [
       message: (userId: string, nodeId: string, nodeType: string) => ({
           alertMessage: {
               title: "**Warning!** No Archival Peers Alert",
-              text: `**<@${userId}> take action! Your \`${nodeType}\` node**\n\n**\`${nodeId}\`** has no archival peers.`,
+              text: `**<@${userId}> take action! Your${" \`" + nodeType + "\` " || " "}node**\n\n**\`${nodeId}\`** has no archival peers.`,
           },
           resolveMessage: {
               title: "**Resolved!** No Archival Peers Alert",
-              text: `**<@${userId}> you can chillin' now! Your \`${nodeType}\` node**\n\n**\`${nodeId}\`** now has archival peers.`,
+              text: `**<@${userId}> you can chillin' now! Your${" \`" + nodeType + "\` " || " "}node**\n\n**\`${nodeId}\`** now has archival peers.`,
           },
       }),
     async check(payload: checkPayload) {
