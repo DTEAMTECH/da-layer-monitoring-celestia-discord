@@ -45,7 +45,7 @@ export const info: Command = {
           .setTitle("Error")
           .setDescription("You must be in a server to use this command!")
           .setColor(0xaf3838)
-          .setThumbnail("https://raw.githubusercontent.com/DTEAMTECH/contributions/refs/heads/main/celestia/utils/bridge_metrics_checker.png")
+          .setThumbnail("https://raw.githubusercontent.com/DTEAMTECH/contributions/refs/heads/main/celestia/utils/da_layer_metrics.png")
           .setFooter({ text: "Powered by www.dteam.tech \uD83D\uDFE0" });
       return json({ type: 4, data: { embeds: [embed] } });
     }
@@ -56,7 +56,7 @@ export const info: Command = {
           .setTitle("Missing Parameters")
           .setDescription("You must provide a node id")
           .setColor(0xaf3838)
-          .setThumbnail("https://raw.githubusercontent.com/DTEAMTECH/contributions/refs/heads/main/celestia/utils/bridge_metrics_checker.png")
+          .setThumbnail("https://raw.githubusercontent.com/DTEAMTECH/contributions/refs/heads/main/celestia/utils/da_layer_metrics.png")
           .setFooter({ text: "Powered by www.dteam.tech \uD83D\uDFE0" })
           .setTimestamp(new Date());
       return json({ type: 4, data: { embeds: [embed] } });
@@ -71,7 +71,7 @@ export const info: Command = {
           .setTitle("Invalid Node Id")
           .setDescription("You are not subscribed to that node id")
           .setColor(0xaf3838)
-          .setThumbnail("https://raw.githubusercontent.com/DTEAMTECH/contributions/refs/heads/main/celestia/utils/bridge_metrics_checker.png")
+          .setThumbnail("https://raw.githubusercontent.com/DTEAMTECH/contributions/refs/heads/main/celestia/utils/da_layer_metrics.png")
           .setFooter({ text: "Powered by www.dteam.tech \uD83D\uDFE0" })
           .setTimestamp(new Date());
       return json({ type: 4, data: { embeds: [embed] } });
@@ -82,7 +82,7 @@ export const info: Command = {
           .setTitle("Error")
           .setDescription("Failed to retrieve node information")
           .setColor(0xaf3838)
-          .setThumbnail("https://raw.githubusercontent.com/DTEAMTECH/contributions/refs/heads/main/celestia/utils/bridge_metrics_checker.png")
+          .setThumbnail("https://raw.githubusercontent.com/DTEAMTECH/contributions/refs/heads/main/celestia/utils/da_layer_metrics.png")
           .setFooter({ text: "Powered by www.dteam.tech \uD83D\uDFE0" })
           .setTimestamp(new Date());
       return json({ type: 4, data: { embeds: [embed] } });
@@ -111,7 +111,7 @@ export const info: Command = {
     const embed = new EmbedBuilder()
         .setTitle("Subscribed Node Information")
         .setColor(0x7b2bf9)
-        .setThumbnail("https://raw.githubusercontent.com/DTEAMTECH/contributions/refs/heads/main/celestia/utils/bridge_metrics_checker.png")
+        .setThumbnail("https://raw.githubusercontent.com/DTEAMTECH/contributions/refs/heads/main/celestia/utils/da_layer_metrics.png")
         .setFooter({ text: "Powered by www.dteam.tech \uD83D\uDFE0" })
         .setTimestamp(new Date())
         .addFields([
