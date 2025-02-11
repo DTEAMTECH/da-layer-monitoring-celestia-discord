@@ -6,6 +6,6 @@ export type User = {
 
 export type Subscription = {
   userId: string;
-  nodeBridgeId: string;
+  nodeId: string;
   subscribedAt: string;
 };
