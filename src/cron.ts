@@ -1,22 +1,22 @@
 import { kv } from "app/services/storage.ts";
-import { bridgeNodesAPI } from "app/services/api.ts";
+import { nodesAPI } from "app/services/api.ts";
 import { disApi, isRecent } from "app/utils.ts";
 import { EmbedBuilder } from "discord.js";
 import alerts, { Alert, CheckResult } from "app/alerts.ts";
 import { isObject } from "app/utils.ts";
 // TODO: create resolve and alert messages
 const createAlertMessage = (title: string, text: string) =>
-  new EmbedBuilder().setTitle(title)
-    .setDescription(text)
-    .setColor(title.indexOf('Warning') !== -1 ? 0xaf3838 : 0x32b76c)
-    .setThumbnail(
-      "https://raw.githubusercontent.com/DTEAMTECH/contributions/refs/heads/main/celestia/utils/bridge_metrics_checker.png",
-    )
-    .setFooter({ text: "Powered by www.dteam.tech \uD83D\uDFE0" })
-    .setTimestamp(new Date());
+    new EmbedBuilder().setTitle(title)
+        .setDescription(text)
+        .setColor(title.indexOf('Warning') !== -1 ? 0xaf3838 : 0x32b76c)
+        .setThumbnail(
+            "https://raw.githubusercontent.com/DTEAMTECH/contributions/refs/heads/main/celestia/utils/bridge_metrics_checker.png",
+        )
+        .setFooter({ text: "Powered by www.dteam.tech \uD83D\uDFE0" })
+        .setTimestamp(new Date());
 // TODO: Create global error handler and send error message to private channel
-Deno.cron("Check bridge nodes", "*/5 * * * *", async () => {
-  const nodesIds = await bridgeNodesAPI.getAllBridgeNodesIds();
+Deno.cron("Check nodes", "*/5 * * * *", async () => {
+  const nodesIds = await nodesAPI.getAllNodesIds();
   const nodesChecks = new Map<string, {
     check: CheckResult;
     alert: Alert;
@@ -46,24 +46,25 @@ Deno.cron("Check bridge nodes", "*/5 * * * *", async () => {
     if (!nodeData) continue;
 
     const alerted: Record<string, string> =
-      isObject(value) && "alerted" in value
-        ? value.alerted as Record<string, string>
-        : {};
+        isObject(value) && "alerted" in value
+            ? value.alerted as Record<string, string>
+            : {};
 
     const newAlerted: Record<string, string> = {};
+    const nodeType = await nodesAPI.getNodeType(nodeId);
 
     for (const alert of nodeData) {
       const isFired = alert.check.isFired;
-      const message = alert.alert.message(String(userId), String(nodeId));
+      const message = alert.alert.message(String(userId), String(nodeId), String(nodeType));
       const embededAlertMessage = isFired
-        ? createAlertMessage(
-          message.alertMessage.title,
-          message.alertMessage.text,
-        )
-        : createAlertMessage(
-          message.resolveMessage.title,
-          message.resolveMessage.text,
-        );
+          ? createAlertMessage(
+              message.alertMessage.title,
+              message.alertMessage.text,
+          )
+          : createAlertMessage(
+              message.resolveMessage.title,
+              message.resolveMessage.text,
+          );
 
       if (isFired) {
         const alertedTimeIso = alerted[alert.alert.name];
@@ -81,10 +82,10 @@ Deno.cron("Check bridge nodes", "*/5 * * * *", async () => {
 
     await kv.set(["subscription", userId, nodeId], {
       userId,
-      nodeBridgeId: nodeId,
+      nodeId: nodeId,
       subscribedAt: "subscribedAt" in value
-        ? value.subscribedAt
-        : new Date().toISOString(),
+          ? value.subscribedAt
+          : new Date().toISOString(),
       alerted: newAlerted,
     });
   }
