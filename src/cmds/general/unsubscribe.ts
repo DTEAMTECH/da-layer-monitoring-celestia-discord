@@ -22,7 +22,7 @@ export const unsubscribe: Command = {
       const embed = new EmbedBuilder()
           .setTitle("Error")
           .setDescription("You must be in a server to use this command!")
-          .setThumbnail("https://raw.githubusercontent.com/DTEAMTECH/contributions/refs/heads/main/celestia/utils/bridge_metrics_checker.png")
+          .setThumbnail("https://raw.githubusercontent.com/DTEAMTECH/contributions/refs/heads/main/celestia/utils/da_layer_metrics.png")
           .setColor(0xaf3838);
       return json({ type: 4, data: { embeds: [embed] } });
     }
@@ -37,7 +37,7 @@ export const unsubscribe: Command = {
           .setTitle("No Subscriptions")
           .setDescription("You have no subscriptions to unsubscribe from")
           .setColor(0xf3cd37)
-          .setThumbnail("https://raw.githubusercontent.com/DTEAMTECH/contributions/refs/heads/main/celestia/utils/bridge_metrics_checker.png")
+          .setThumbnail("https://raw.githubusercontent.com/DTEAMTECH/contributions/refs/heads/main/celestia/utils/da_layer_metrics.png")
           .setFooter({ text: "Powered by www.dteam.tech \uD83D\uDFE0" })
           .setTimestamp(new Date());
       return json({ type: 4, data: { embeds: [embed] } });
@@ -55,7 +55,7 @@ export const unsubscribe: Command = {
           .setTitle("Error")
           .setDescription("You must be in a server to use this command!")
           .setColor(0xaf3838)
-          .setThumbnail("https://raw.githubusercontent.com/DTEAMTECH/contributions/refs/heads/main/celestia/utils/bridge_metrics_checker.png")
+          .setThumbnail("https://raw.githubusercontent.com/DTEAMTECH/contributions/refs/heads/main/celestia/utils/da_layer_metrics.png")
           .setFooter({ text: "Powered by www.dteam.tech \uD83D\uDFE0" });
       return json({ type: 4, data: { embeds: [embed] } });
     }
@@ -66,7 +66,7 @@ export const unsubscribe: Command = {
           .setTitle("Invalid Parameters")
           .setDescription("You must provide a valid bridge node id")
           .setColor(0xaf3838)
-          .setThumbnail("https://raw.githubusercontent.com/DTEAMTECH/contributions/refs/heads/main/celestia/utils/bridge_metrics_checker.png")
+          .setThumbnail("https://raw.githubusercontent.com/DTEAMTECH/contributions/refs/heads/main/celestia/utils/da_layer_metrics.png")
           .setFooter({ text: "Powered by www.dteam.tech \uD83D\uDFE0" })
           .setTimestamp(new Date());
       return json({ type: 4, data: { embeds: [embed] } });
@@ -77,7 +77,7 @@ export const unsubscribe: Command = {
           .setTitle("Not Subscribed")
           .setDescription("You are not subscribed to this bridge node id")
           .setColor(0xaf3838)
-          .setThumbnail("https://raw.githubusercontent.com/DTEAMTECH/contributions/refs/heads/main/celestia/utils/bridge_metrics_checker.png")
+          .setThumbnail("https://raw.githubusercontent.com/DTEAMTECH/contributions/refs/heads/main/celestia/utils/da_layer_metrics.png")
           .setFooter({ text: "Powered by www.dteam.tech \uD83D\uDFE0" })
           .setTimestamp(new Date());
       return json({ type: 4, data: { embeds: [embed] } });
@@ -90,7 +90,7 @@ export const unsubscribe: Command = {
         .setTitle("Unsubscribed Successfully")
         .setDescription(`You have successfully unsubscribed from **\`${nodeType ?? "Unknown"}\`** node **\`${param.value}\`**`)
         .setColor(0x7b2bf9)
-        .setThumbnail("https://raw.githubusercontent.com/DTEAMTECH/contributions/refs/heads/main/celestia/utils/bridge_metrics_checker.png")
+        .setThumbnail("https://raw.githubusercontent.com/DTEAMTECH/contributions/refs/heads/main/celestia/utils/da_layer_metrics.png")
         .setFooter({ text: "Powered by www.dteam.tech \uD83D\uDFE0" })
         .setTimestamp(new Date());
     return json({ type: 4, data: { embeds: [embed] } });
