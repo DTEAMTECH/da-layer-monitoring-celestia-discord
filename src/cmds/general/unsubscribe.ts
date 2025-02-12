@@ -24,7 +24,7 @@ export const unsubscribe: Command = {
           .setDescription("You must be in a server to use this command!")
           .setThumbnail("https://raw.githubusercontent.com/DTEAMTECH/contributions/refs/heads/main/celestia/utils/da_layer_metrics.png")
           .setColor(0xaf3838);
-      return json({ type: 4, data: { embeds: [embed] } });
+      return json({ type: 4, data: { embeds: [embed], flags: 64 } });
     }
     const userId = interaction.member.user.id;
     const subscribedNodesIterator = kv.list({ prefix: ["subscription", userId] });
@@ -40,7 +40,7 @@ export const unsubscribe: Command = {
           .setThumbnail("https://raw.githubusercontent.com/DTEAMTECH/contributions/refs/heads/main/celestia/utils/da_layer_metrics.png")
           .setFooter({ text: "Powered by www.dteam.tech \uD83D\uDFE0" })
           .setTimestamp(new Date());
-      return json({ type: 4, data: { embeds: [embed] } });
+      return json({ type: 4, data: { embeds: [embed], flags: 64 } });
     }
     const choicesPromises = subscribedNodes.map(async (nodeId) => {
       const nodeType = await nodesAPI.getNodeType(nodeId);
@@ -57,30 +57,30 @@ export const unsubscribe: Command = {
           .setColor(0xaf3838)
           .setThumbnail("https://raw.githubusercontent.com/DTEAMTECH/contributions/refs/heads/main/celestia/utils/da_layer_metrics.png")
           .setFooter({ text: "Powered by www.dteam.tech \uD83D\uDFE0" });
-      return json({ type: 4, data: { embeds: [embed] } });
+      return json({ type: 4, data: { embeds: [embed], flags: 64 } });
     }
     const userId = interaction.member.user.id;
     const param = data.options?.find((opt) => opt.name === "id");
     if (!param || param.type !== 3) {
       const embed = new EmbedBuilder()
           .setTitle("Invalid Parameters")
-          .setDescription("You must provide a valid bridge node id")
+          .setDescription("You must provide a valid node id")
           .setColor(0xaf3838)
           .setThumbnail("https://raw.githubusercontent.com/DTEAMTECH/contributions/refs/heads/main/celestia/utils/da_layer_metrics.png")
           .setFooter({ text: "Powered by www.dteam.tech \uD83D\uDFE0" })
           .setTimestamp(new Date());
-      return json({ type: 4, data: { embeds: [embed] } });
+      return json({ type: 4, data: { embeds: [embed], flags: 64 } });
     }
-    const bridgeNode = await kv.get(["subscription", userId, param.value]);
-    if (!bridgeNode.value) {
+    const daNode = await kv.get(["subscription", userId, param.value]);
+    if (!daNode.value) {
       const embed = new EmbedBuilder()
           .setTitle("Not Subscribed")
-          .setDescription("You are not subscribed to this bridge node id")
+          .setDescription("You are not subscribed to this node id")
           .setColor(0xaf3838)
           .setThumbnail("https://raw.githubusercontent.com/DTEAMTECH/contributions/refs/heads/main/celestia/utils/da_layer_metrics.png")
           .setFooter({ text: "Powered by www.dteam.tech \uD83D\uDFE0" })
           .setTimestamp(new Date());
-      return json({ type: 4, data: { embeds: [embed] } });
+      return json({ type: 4, data: { embeds: [embed], flags: 64 } });
     }
 
     const nodeType = await nodesAPI.getNodeType(param.value);
@@ -93,6 +93,6 @@ export const unsubscribe: Command = {
         .setThumbnail("https://raw.githubusercontent.com/DTEAMTECH/contributions/refs/heads/main/celestia/utils/da_layer_metrics.png")
         .setFooter({ text: "Powered by www.dteam.tech \uD83D\uDFE0" })
         .setTimestamp(new Date());
-    return json({ type: 4, data: { embeds: [embed] } });
+    return json({ type: 4, data: { embeds: [embed], flags: 64 } });
   },
 };
