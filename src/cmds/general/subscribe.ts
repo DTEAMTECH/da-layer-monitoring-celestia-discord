@@ -70,7 +70,7 @@ export const subscribe: Command = {
           .setColor(0xaf3838)
           .setThumbnail("https://raw.githubusercontent.com/DTEAMTECH/contributions/refs/heads/main/celestia/utils/da_layer_metrics.png")
           .setFooter({ text: "Powered by www.dteam.tech \uD83D\uDFE0" });
-      return json({ type: 4, data: { embeds: [embed] } });
+      return json({ type: 4, data: { embeds: [embed], flags: 64 } });
     }
     const userId = interaction.member.user.id;
     const username = interaction.member.user.username;
@@ -85,7 +85,7 @@ export const subscribe: Command = {
           .setThumbnail("https://raw.githubusercontent.com/DTEAMTECH/contributions/refs/heads/main/celestia/utils/da_layer_metrics.png")
           .setFooter({ text: "Powered by www.dteam.tech \uD83D\uDFE0" })
           .setTimestamp(new Date());
-      return json({ type: 4, data: { embeds: [embed] } });
+      return json({ type: 4, data: { embeds: [embed], flags: 64 } });
     }
     if (param.type !== 3) {
       const embed = new EmbedBuilder()
@@ -95,7 +95,7 @@ export const subscribe: Command = {
           .setThumbnail("https://raw.githubusercontent.com/DTEAMTECH/contributions/refs/heads/main/celestia/utils/da_layer_metrics.png")
           .setFooter({ text: "Powered by www.dteam.tech \uD83D\uDFE0" })
           .setTimestamp(new Date());
-      return json({ type: 4, data: { embeds: [embed] } });
+      return json({ type: 4, data: { embeds: [embed], flags: 64 } });
     }
     kv.set(["user", userId], { username, id: userId, globalName });
     const nodesIds = await nodesAPI.getAllNodesIds();
@@ -107,7 +107,7 @@ export const subscribe: Command = {
           .setThumbnail("https://raw.githubusercontent.com/DTEAMTECH/contributions/refs/heads/main/celestia/utils/da_layer_metrics.png")
           .setFooter({ text: "Powered by www.dteam.tech \uD83D\uDFE0" })
           .setTimestamp(new Date());
-      return json({ type: 4, data: { embeds: [embed] } });
+      return json({ type: 4, data: { embeds: [embed], flags: 64 } });
     }
     const nodeType = await nodesAPI.getNodeType(param.value);
     kv.set(["subscription", userId, param.value], {
@@ -122,6 +122,6 @@ export const subscribe: Command = {
         .setThumbnail("https://raw.githubusercontent.com/DTEAMTECH/contributions/refs/heads/main/celestia/utils/da_layer_metrics.png")
         .setFooter({ text: "Powered by www.dteam.tech \uD83D\uDFE0" })
         .setTimestamp(new Date());
-    return json({ type: 4, data: { embeds: [embed] } });
+    return json({ type: 4, data: { embeds: [embed], flags: 64 } });
   },
 };
