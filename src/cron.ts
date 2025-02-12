@@ -4,9 +4,11 @@ import { disApi, isRecent } from "app/utils.ts";
 import { EmbedBuilder } from "discord.js";
 import alerts, { Alert, CheckResult } from "app/alerts.ts";
 import { isObject } from "app/utils.ts";
-// TODO: create resolve and alert messages
+
+// Функция для создания embed-сообщения с разными цветами в зависимости от заголовка
 const createAlertMessage = (title: string, text: string) =>
-    new EmbedBuilder().setTitle(title)
+    new EmbedBuilder()
+        .setTitle(title)
         .setDescription(text)
         .setColor(title.indexOf('Warning') !== -1 ? 0xaf3838 : 0x32b76c)
         .setThumbnail(
@@ -14,15 +16,12 @@ const createAlertMessage = (title: string, text: string) =>
         )
         .setFooter({ text: "Powered by www.dteam.tech \uD83D\uDFE0" })
         .setTimestamp(new Date());
+
 // TODO: Create global error handler and send error message to private channel
 Deno.cron("Check nodes", "*/5 * * * *", async () => {
   const nodesIds = await nodesAPI.getAllNodesIds();
-  const nodesChecks = new Map<string, {
-    check: CheckResult;
-    alert: Alert;
-  }[]>();
+  const nodesChecks = new Map<string, { check: CheckResult; alert: Alert; }[]>();
 
-  // collect alerts
   for (const nodeId of nodesIds) {
     const checks = [];
     for (const alert of alerts) {
@@ -47,7 +46,7 @@ Deno.cron("Check nodes", "*/5 * * * *", async () => {
 
     const alerted: Record<string, string> =
         isObject(value) && "alerted" in value
-            ? value.alerted as Record<string, string>
+            ? (value.alerted as Record<string, string>)
             : {};
 
     const newAlerted: Record<string, string> = {};
@@ -72,10 +71,10 @@ Deno.cron("Check nodes", "*/5 * * * *", async () => {
           newAlerted[alert.alert.name] = alertedTimeIso;
           continue;
         }
-        await disApi.sendEmbedMessageBotChannel(embededAlertMessage);
+        await disApi.sendEmbedMessageUser(String(userId), embededAlertMessage);
         newAlerted[alert.alert.name] = new Date().toISOString();
       } else if (alert.alert.name in alerted) {
-        await disApi.sendEmbedMessageBotChannel(embededAlertMessage);
+        await disApi.sendEmbedMessageUser(String(userId), embededAlertMessage);
         delete alerted[alert.alert.name];
       }
     }
@@ -83,9 +82,7 @@ Deno.cron("Check nodes", "*/5 * * * *", async () => {
     await kv.set(["subscription", userId, nodeId], {
       userId,
       nodeId: nodeId,
-      subscribedAt: "subscribedAt" in value
-          ? value.subscribedAt
-          : new Date().toISOString(),
+      subscribedAt: "subscribedAt" in value ? value.subscribedAt : new Date().toISOString(),
       alerted: newAlerted,
     });
   }
