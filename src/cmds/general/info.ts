@@ -47,7 +47,7 @@ export const info: Command = {
           .setColor(0xaf3838)
           .setThumbnail("https://raw.githubusercontent.com/DTEAMTECH/contributions/refs/heads/main/celestia/utils/da_layer_metrics.png")
           .setFooter({ text: "Powered by www.dteam.tech \uD83D\uDFE0" });
-      return json({ type: 4, data: { embeds: [embed] } });
+      return json({ type: 4, data: { embeds: [embed], flags: 64 } });
     }
     const userId = interaction.member.user.id;
     const param = _data.options?.find((opt) => opt.name === "id");
@@ -59,7 +59,7 @@ export const info: Command = {
           .setThumbnail("https://raw.githubusercontent.com/DTEAMTECH/contributions/refs/heads/main/celestia/utils/da_layer_metrics.png")
           .setFooter({ text: "Powered by www.dteam.tech \uD83D\uDFE0" })
           .setTimestamp(new Date());
-      return json({ type: 4, data: { embeds: [embed] } });
+      return json({ type: 4, data: { embeds: [embed], flags: 64 } });
     }
     const nodeId = param.value;
     let subscribed = false;
@@ -74,7 +74,7 @@ export const info: Command = {
           .setThumbnail("https://raw.githubusercontent.com/DTEAMTECH/contributions/refs/heads/main/celestia/utils/da_layer_metrics.png")
           .setFooter({ text: "Powered by www.dteam.tech \uD83D\uDFE0" })
           .setTimestamp(new Date());
-      return json({ type: 4, data: { embeds: [embed] } });
+      return json({ type: 4, data: { embeds: [embed], flags: 64 } });
     }
     const nodeInfo = await nodesAPI.buildInfo(nodeId);
     if (!nodeInfo) {
@@ -85,7 +85,7 @@ export const info: Command = {
           .setThumbnail("https://raw.githubusercontent.com/DTEAMTECH/contributions/refs/heads/main/celestia/utils/da_layer_metrics.png")
           .setFooter({ text: "Powered by www.dteam.tech \uD83D\uDFE0" })
           .setTimestamp(new Date());
-      return json({ type: 4, data: { embeds: [embed] } });
+      return json({ type: 4, data: { embeds: [embed], flags: 64 } });
     }
     const labels = nodeInfo.metric.labels;
     const nodeType = await nodesAPI.getNodeType(nodeId);
@@ -121,7 +121,7 @@ export const info: Command = {
           { name: "", value: "", inline: false },
           { name: "Node Details", value: details, inline: false }
         ]);
-    return json({ type: 4, data: { embeds: [embed] } });
+    return json({ type: 4, data: { embeds: [embed], flags: 64 } });
   },
 };
 
