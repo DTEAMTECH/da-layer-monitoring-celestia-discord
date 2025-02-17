@@ -5,7 +5,6 @@ import { EmbedBuilder } from "discord.js";
 import alerts, { Alert, CheckResult } from "app/alerts.ts";
 import { isObject } from "app/utils.ts";
 
-// Функция для создания embed-сообщения с разными цветами в зависимости от заголовка
 const createAlertMessage = (title: string, text: string) =>
     new EmbedBuilder()
         .setTitle(title)
