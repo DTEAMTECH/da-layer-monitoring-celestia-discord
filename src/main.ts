@@ -1,9 +1,6 @@
 import { json, serve, validateRequest } from "sift/mod.ts";
 import { cmdsRegisterHandler } from "app/handlers/cmds_register.ts";
-import {
-  APIApplicationCommandAutocompleteInteraction,
-  APIApplicationCommandInteraction,
-} from "discord.js";
+import { APIApplicationCommandAutocompleteInteraction, APIApplicationCommandInteraction } from "discord.js";
 import { commands } from "app/cmds/mod.ts";
 import config from "app/config.ts";
 import nacl from "https://esm.sh/tweetnacl@v1.0.3?dts";
@@ -16,14 +13,11 @@ serve({
 async function main(request: Request) {
   console.log("Request headers", request.headers);
   const { error } = await validateRequest(request, {
-    POST: {
-      headers: ["x-signature-ed25519", "x-signature-timestamp"],
-    },
+    POST: { headers: ["x-signature-ed25519", "x-signature-timestamp"] },
   });
   if (error) {
     return json({ error: error.message }, { status: error.status });
   }
-
   const { valid, body } = await verifySignature(request);
   if (!valid) {
     return json({ error: "Invalid request" }, { status: 401 });
@@ -31,12 +25,10 @@ async function main(request: Request) {
   const parsedBody = JSON.parse(body);
   const { type = 0, data = { options: [] } } = parsedBody;
   console.log("type", type);
-
   if (type === 1) {
     console.log("Pinged!");
     return json({ type: 1 });
   }
-
   if (type === 2) {
     const { name } = data;
     const interaction = parsedBody as APIApplicationCommandInteraction;
@@ -68,7 +60,6 @@ async function main(request: Request) {
     }
     return currentCommand.autocomplete(interaction);
   }
-
   return json({ error: "bad request" }, { status: 400 });
 }
 
