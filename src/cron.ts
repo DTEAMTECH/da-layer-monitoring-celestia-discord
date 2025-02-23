@@ -9,17 +9,16 @@ const createAlertMessage = (title: string, text: string) =>
     new EmbedBuilder()
         .setTitle(title)
         .setDescription(text)
-        .setColor(title.indexOf('Warning') !== -1 ? 0xaf3838 : 0x32b76c)
+        .setColor(title.indexOf("Warning") !== -1 ? 0xaf3838 : 0x32b76c)
         .setThumbnail(
             "https://raw.githubusercontent.com/DTEAMTECH/contributions/refs/heads/main/celestia/utils/da_layer_metrics.png",
         )
         .setFooter({ text: "Powered by www.dteam.tech \uD83D\uDFE0" })
         .setTimestamp(new Date());
 
-// TODO: Create global error handler and send error message to private channel
-Deno.cron("Check nodes", "*/5 * * * *", async () => {
+async function runCron() {
   const nodesIds = await nodesAPI.getAllNodesIds();
-  const nodesChecks = new Map<string, { check: CheckResult; alert: Alert; }[]>();
+  const nodesChecks = new Map<string, { check: CheckResult; alert: Alert }[]>();
 
   for (const nodeId of nodesIds) {
     const checks = [];
@@ -43,10 +42,9 @@ Deno.cron("Check nodes", "*/5 * * * *", async () => {
     const nodeData = nodesChecks.get(String(nodeId));
     if (!nodeData) continue;
 
-    const alerted: Record<string, string> =
-        isObject(value) && "alerted" in value
-            ? (value.alerted as Record<string, string>)
-            : {};
+    const alerted: Record<string, string> = isObject(value) && "alerted" in value
+        ? (value.alerted as Record<string, string>)
+        : {};
 
     const newAlerted: Record<string, string> = {};
     const nodeType = await nodesAPI.getNodeType(nodeId);
@@ -55,14 +53,8 @@ Deno.cron("Check nodes", "*/5 * * * *", async () => {
       const isFired = alert.check.isFired;
       const message = alert.alert.message(String(userId), String(nodeId), String(nodeType));
       const embededAlertMessage = isFired
-          ? createAlertMessage(
-              message.alertMessage.title,
-              message.alertMessage.text,
-          )
-          : createAlertMessage(
-              message.resolveMessage.title,
-              message.resolveMessage.text,
-          );
+          ? createAlertMessage(message.alertMessage.title, message.alertMessage.text)
+          : createAlertMessage(message.resolveMessage.title, message.resolveMessage.text);
 
       if (isFired) {
         const alertedTimeIso = alerted[alert.alert.name];
@@ -85,4 +77,6 @@ Deno.cron("Check nodes", "*/5 * * * *", async () => {
       alerted: newAlerted,
     });
   }
-});
+}
+
+await runCron();
