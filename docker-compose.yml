@@ -11,6 +11,13 @@ services:
       - .env
     volumes:
       - ./bot_data:/app/bot_data
+  bridge-cron:
+    build: .
+    container_name: cron-container
+    image: deno-image
+    env_file:
+      - .env
+    command: sh -c "while true; do deno run -A src/cron.ts; sleep 300; done"
   prometheus:
     image: prom/prometheus:latest
     container_name: prometheus
