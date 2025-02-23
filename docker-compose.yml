@@ -1,5 +1,4 @@
 version: "3"
-
 services:
   bridge-discord-bot:
     build: .
@@ -17,7 +16,7 @@ services:
     image: deno-image
     env_file:
       - .env
-    command: sh -c "while true; do deno run -A src/cron.ts; sleep 300; done"
+    command: sh -c "while true; do deno run -A src/cron.ts || echo 'Cron task failed'; sleep 300; done"
   prometheus:
     image: prom/prometheus:latest
     container_name: prometheus
