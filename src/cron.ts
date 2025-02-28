@@ -38,9 +38,15 @@ async function runCron() {
       if (!isObject(value)) continue;
       const nodeData = nodesChecks.get(String(nodeId));
       if (!nodeData) continue;
-      const alerted: Record<string, string> = isObject(value) && "alerted" in value ? (value.alerted as Record<string, string>) : {};
+      const alerted: Record<string, string> = ("alerted" in value)
+          ? (value.alerted as Record<string, string>)
+          : {};
       const newAlerted: Record<string, string> = {};
-      const nodeType = await nodesAPI.getNodeType(nodeId);
+
+      let nodeType = (value as any).nodeType;
+      if (!nodeType) {
+        nodeType = await nodesAPI.getNodeType(nodeId);
+      }
       for (const alert of nodeData) {
         const isFired = alert.check.isFired;
         const message = alert.alert.message(String(userId), String(nodeId), String(nodeType));
@@ -71,13 +77,13 @@ async function runCron() {
       await kv.set(["subscription", userId, nodeId], {
         userId,
         nodeId: nodeId,
+        nodeType: nodeType,
         subscribedAt: "subscribedAt" in value ? value.subscribedAt : new Date().toISOString(),
         alerted: newAlerted,
       });
     }
   } catch (error) {
     console.error("Error in runCron:", error);
-
     Deno.exit(1);
   }
 }
