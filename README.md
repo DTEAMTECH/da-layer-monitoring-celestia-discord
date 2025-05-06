@@ -1,12 +1,34 @@
-# Celestia Bridge Metrics Checker
+# Celestia DA Layer Metrics Checker
 
-![image](https://github.com/user-attachments/assets/6231f189-d23a-40cc-b2ac-6619c069d941)
+![da_metrics](https://github.com/user-attachments/assets/d73b189f-8cec-42ad-9671-c026a99c956f)
 
-**Celestia Bridge Metrics Checker** is the ultimate tool for ensuring the reliability and security of your Celestia Bridge Node. Built with the community in mind, this user-friendly solution makes it easy to verify and monitor the health of your bridge nodes, giving you peace of mind and optimal performance every time.
+**Celestia DA Layer Metrics Checker** is the ultimate tool for ensuring the reliability and security of your Celestia DA Nodes. Built with the community in mind, this user-friendly solution makes it easy to verify and monitor the health of your DA nodes, giving you peace of mind and optimal performance every time.
 
 ---
 
 ## Key Features
+
+1. **Direct Message Alerts**  
+   Receive private, real-time alerts straight to your Discord DMs—never miss a critical node event or warning again.
+
+2. **Ephemeral Info Messages**  
+   Keep community channels clean with status updates that auto-delete after a configurable timeout and are visible only to you.
+
+3. **Resolved Messages**  
+   Whenever a previously detected issue has been resolved, the service issues a “resolved” message, confirming that normal operations have been restored.
+
+4. **Support for Mainnet & Testnet**  
+   Monitor both Celestia mainnet and testnet nodes with identical workflows and consistent alerting across environments.
+
+5. **User-Defined Alert Thresholds (Upcoming, will be added in the future)**  
+   Customize sensitivity on peer drops, block stalls, sync lag and more to match your personal monitoring preferences.
+
+6. **Zero-Install**  
+   Completely server-free monitoring—there’s nothing to deploy outside Discord. Configure and run the bot without leaving your chat. 
+
+---
+
+## Alerts list
 
 1. **Low Peer Count Alert**  
    Automatically notifies you when your node loses peers, ensuring you’re aware of potential connectivity issues.
@@ -20,12 +42,6 @@
 4. **No Archival Peers Alert**  
    Warns you if the monitored node is not running in archival mode, allowing you to address potential data unavailability issues.
 
-5. **Resolved Messages**  
-   Whenever a previously detected issue has been resolved, the service issues a “resolved” message, confirming that normal operations have been restored.
-
-6. **Support for Mainnet and Testnet**  
-   Seamlessly works with both Celestia mainnet and testnet.
-
 ---
 
 ## Supported Commands
@@ -38,7 +54,7 @@
 
 - `/info`  
   Fetches detailed information about your subscribed nodes, including:  
-  - DA Node ID
+  - Node ID
   - Node Type(Bridge, Light, Full)
   - Active Alerts  
   - Build Version  
@@ -53,17 +69,22 @@
 
 Below is a concise, step-by-step guide to get you up and running with Celestia DA Metrics Checker, complete with screenshots to illustrate the process.
 
-### 1. Choose the `/subscribe` Option
+### 1. Make sure you have Direct Messages enabled
+<img width="1006" alt="image" src="https://github.com/user-attachments/assets/37fd49a9-14ed-40c3-a655-c987e6f4ed1e" />
+
+Otherwise bot will not be able to send messages via DM.
+
+### 2. Choose the `/subscribe` Option
 <img width="785" alt="image" src="https://github.com/user-attachments/assets/4575b622-0b05-4c0d-95ee-638104ba6282" />
 
 When you open the command interface, you’ll see a list of available commands. Select the **`/subscribe`** command to begin monitoring a new DA Node.  
 
-### 2. Choose the Instance and Press Enter
+### 3. Choose the Instance and Press Enter
 <img width="873" alt="image" src="https://github.com/user-attachments/assets/a0bbfef2-b640-4f61-9f9f-a956083142cf" />
 
 After selecting `/subscribe`, you can specify the **Node ID** you wish to monitor. Simply choose the relevant node ID from the dropdown suggestions (or type it out manually) and press **Enter**.
 
-### 3. You’re In!
+### 4. You’re In!
 <img width="856" alt="image" src="https://github.com/user-attachments/assets/ab093e41-6297-4101-aec3-0c62a6af6d38" />
 
 Once you’ve confirmed the node ID, Celestia DA Metrics Checker will post a **Subscription Success** message, indicating that you are now actively monitoring the specified node. From this point on, you will receive alerts and updates tailored to that node’s status.
@@ -121,8 +142,7 @@ This overview helps users quickly verify that the node’s software and environm
 
 
 #### 4. Receiving an Alert
-<img width="1114" alt="image" src="https://github.com/user-attachments/assets/bf2b0cc8-806f-4224-b1aa-b2105e9ebef9" />
-
+<img width="1104" alt="image" src="https://github.com/user-attachments/assets/14458662-7558-42d1-a9a2-0d333d97f734" />
 
 When the bot detects a potential issue—such as the node falling more than 50 blocks behind—it automatically sends an alert to prompt swift action.  
 - **Alert Message:** **Warning! Node Sync Alert**  
@@ -131,19 +151,19 @@ When the bot detects a potential issue—such as the node falling more than 50 b
 
 
 #### 5. Receiving a Resolve Message
-<img width="1114" alt="image" src="https://github.com/user-attachments/assets/066f7c77-348b-4303-b550-e269aa4db963" />
+<img width="1104" alt="image" src="https://github.com/user-attachments/assets/f65a54bb-052d-4897-a3e4-091c1aaa751c" />
 
 Once the bot confirms that a previously alerted condition is resolved, it sends a “Resolved” message.  
 - **Resolved Message:** **Resolved! Node Sync Alert**  
 - **Details:** The node `12D3K...` is now synchronized.  
 - **Significance:** This quick confirmation gives users peace of mind that their node has recovered without needing to check manually.
 
-These examples demonstrate how Celestia Bridge Metrics Checker streamlines node monitoring, enabling you to respond rapidly to any issues and stay updated when they are resolved.
+These examples demonstrate how Celestia DA Layer Metrics Checker streamlines nodes monitoring, enabling you to respond rapidly to any issues and stay updated when they are resolved.
 
 ---
 
 ## Contributing
 
-We welcome all contributions to Celestia Bridge Metrics Checker! If you have ideas for new features, improvements, or bug fixes, feel free to open a pull request. We encourage open collaboration and appreciate your help in making this tool even more robust and user-friendly.
+We welcome all contributions to Celestia DA Layer Metrics Checker! If you have ideas for new features, improvements, or bug fixes, feel free to open a pull request. We encourage open collaboration and appreciate your help in making this tool even more robust and user-friendly.
 
 If you prefer to discuss or propose improvements privately, or if you need further assistance, please send us an email at **contact@dteam.tech**. We’re excited to collaborate with the community to continually enhance this service.
