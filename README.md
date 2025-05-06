@@ -80,7 +80,7 @@ Otherwise bot will not be able to send messages via DM.
 When you open the command interface, you’ll see a list of available commands. Select the **`/subscribe`** command to begin monitoring a new DA Node.  
 
 ### 3. Choose the Instance and Press Enter
-<img width="873" alt="image" src="https://github.com/user-attachments/assets/a0bbfef2-b640-4f61-9f9f-a956083142cf" />
+<img width="870" alt="image" src="https://github.com/user-attachments/assets/3646cd5d-44f1-4f2c-9421-3c8de63bf4ad" />
 
 After selecting `/subscribe`, you can specify the **Node ID** you wish to monitor. Simply choose the relevant node ID from the dropdown suggestions (or type it out manually) and press **Enter**.
 
@@ -100,7 +100,7 @@ Below are real-world screenshots illustrating how to interact with the Celestia 
 ### Examples
 
 #### 1. Subscribing to a Node
-<img width="873" alt="image" src="https://github.com/user-attachments/assets/a0bbfef2-b640-4f61-9f9f-a956083142cf" />
+<img width="870" alt="image" src="https://github.com/user-attachments/assets/2481f8d0-9844-41f2-8c7e-ecfe029bb64e" />
 <img width="856" alt="image" src="https://github.com/user-attachments/assets/ab093e41-6297-4101-aec3-0c62a6af6d38" />
 
 
